@@ -9,31 +9,18 @@ Laravel SMS Gateway Integration Package
 
 ## Supported Providers
 - Vodafone SMS Gateway
+- Connekio SMS Gateway
 
 ## Installation
 
 You can install the package via composer:
 
 ```bash
-composer require robust-tools/sms
+composer require robust-tools/resala
 ```
 
 ## Configure
-If you are using Laravel 5.5 or higher then you don't need to add the provider and alias.
 
-In your config/app.php file add these two lines.
-
-``` php
-# In your providers array.
-'providers' => [
-    RobustTools\SMS\SMSServiceProvider::class,
-],
-
-# In your aliases array.
-'aliases' => [
-    'Sms' => RobustTools\SMS\Facades\SMS::class,
-],
-```
 You can optionally publish the config file with:
 
 ```bash
@@ -62,29 +49,42 @@ return [
             "password" => env("VODAFONE_PASSWORD"),
             "secure_hash" => env("VODAFONE_SECURE_HASH"),
             "sender_name" => env("VODAFONE_SENDER_NAME", "Vodafone")
+        ],
+
+        "connekio" => [
+            "single_sms_endpoint" => env("SINGLE_SMS_ENDPOINT"),
+            "batch_sms_endpoint" => env("BATCH_SMS_ENDPOINT"),
+            "username" => env("CONNEKIO_USERNAME"),
+            "password" => env("CONNEKIO_PASSWORD"),
+            "account_id" => env("CONNEKIO_ACCOUNT_ID"),
+            "sender_name" => env("CONNEKIO_SENDER_NAME")
         ]
     ]
 ];
 ```
-Add to your .env file
 
-```.dotenv
-VODAFONE_END_POINT=https://e3len.vodafone.com.eg/web2sms/sms/submit/
-VODAFONE_ACCOUNT_ID=
-VODAFONE_PASSWORD=
-VODAFONE_SECURE_HASH=
-VODAFONE_SENDER_NAME=
+```bash
+php artisan resala:make vodafone
 ```
+This adds vodafone environment variables to your .env file.
+ 
+```bash
+php artisan resala:make connekio
+```
+This adds connekio environment variables to your .env file.
 
 ## Usage
 
 ``` php
-use RobustTools\SMS\Drivers\VodafoneDriver;
+SMS::via('vodafone')
+    ->to('010xxxxxxxx')
+    ->message("Hello World")
+    ->send();
 
-SMS::via(new VodafoneDriver())
-        ->to(["010xxxxxxxx"])
-        ->message("Hello World")
-        ->send()
+SMS::via('connekio')
+    ->to(['010xxxxxxxx', '011xxxxxxxx'])
+    ->message("Hello World")
+    ->send();
 ```
 
 ### Changelog
