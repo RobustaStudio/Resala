@@ -7,22 +7,23 @@ namespace RobustTools\SMS\Contracts;
 interface SMSServiceProviderDriverInterface
 {
     /**
-     * @param array $recipient
+     * SMS recipient could be single recipient (string) or a set of recipients (array).
      *
-     * @return array
+     * @param string|array $recipient
+     *
+     * @return string|array
      */
-    public function to (array $recipient) : array;
+    public function to ($recipient);
 
     /**
      * @param string $message
      *
      * @return string
      */
-    public function message (string $message) : string;
-
+    public function message (string $message): string;
 
     /**
      * @return string
      */
-    public function send () :string;
+    public function send (): string;
 }

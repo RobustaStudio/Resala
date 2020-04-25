@@ -3,6 +3,7 @@
 namespace RobustTools\SMS;
 
 use Illuminate\Support\ServiceProvider;
+use RobustTools\SMS\Console\GenerateSMSServiceProviderEnvVariablesCommand;
 
 class SMSServiceProvider extends ServiceProvider
 {
@@ -13,8 +14,11 @@ class SMSServiceProvider extends ServiceProvider
     {
         if ($this->app->runningInConsole()) {
             $this->publishes([
-                __DIR__ . '/../config/sms.php' => config_path('sms.php'),
+                __DIR__ . '/../config/resala.php' => config_path('resala.php'),
             ], 'config');
+            $this->commands([
+                GenerateSMSServiceProviderEnvVariablesCommand::class
+            ]);
         }
     }
 
@@ -23,7 +27,7 @@ class SMSServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->mergeConfigFrom(__DIR__ . '/../config/sms.php', 'sms');
+        $this->mergeConfigFrom(__DIR__ . '/../config/resala.php', 'resala');
 
         // Register the main class to use with the facade
         $this->app->singleton('sms', function () {

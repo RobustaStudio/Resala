@@ -1,11 +1,12 @@
 {
-    "name": "robust-tools/sms",
+    "name": "robust-tools/resala",
     "description": "Laravel SMS Gateway Integration Package",
     "keywords": [
         "robust-tools",
-        "sms"
+        "sms",
+        "resala"
     ],
-    "homepage": "https://github.com/RobustaStudio/sms",
+    "homepage": "https://github.com/RobustaStudio/Resala",
     "license": "MIT",
     "type": "library",
     "authors": [
@@ -17,10 +18,11 @@
     ],
     "require": {
         "php": "^7.2",
+        "ext-dom": "*",
+        "ext-simplexml": "*",
         "guzzlehttp/guzzle": "^6.5",
         "illuminate/support": "^6.0",
-        "ext-simplexml": "*",
-        "ext-dom": "*"
+        "ext-json": "*"
     },
     "require-dev": {
         "orchestra/testbench": "^4.6.0",
