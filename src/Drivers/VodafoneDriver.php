@@ -60,7 +60,7 @@ final class VodafoneDriver implements SMSServiceProviderDriverInterface
      * @param array $recipients
      * @return array
      */
-    public function to (array $recipients) : array
+    public function to (array $recipients): array
     {
         return $this->recipients = $recipients;
     }
@@ -69,7 +69,7 @@ final class VodafoneDriver implements SMSServiceProviderDriverInterface
      * @param string $message
      * @return string
      */
-    public function message (string $message) : string
+    public function message (string $message): string
     {
         return $this->message = $message;
     }
@@ -78,14 +78,9 @@ final class VodafoneDriver implements SMSServiceProviderDriverInterface
      * @return string
      * @throws VodafoneInvalidRequestException
      */
-    public function send () : string
+    public function send (): string
     {
-        $secureHash = strtoupper(hash_hmac('SHA256', $this->hashableKey(), $this->secureHash));
-
-        $requestBody = (new VodafoneXMLRequestBodyBuilder($this->accountId, $this->password, $this->senderName, $secureHash, $this->recipients, $this->message))
-            ->build();
-
-        $response = (new HTTPClient())->post($this->endPoint, ['Content-Type' => 'application/xml; charset=UTF8'], $requestBody);
+        $response = (new HTTPClient())->post($this->endPoint, ['Content-Type' => 'application/xml; charset=UTF8'], $this->payload());
 
         if ($response->ResultStatus == "INVALID_REQUEST") {
             throw new VodafoneInvalidRequestException($response->Description);
@@ -94,17 +89,38 @@ final class VodafoneDriver implements SMSServiceProviderDriverInterface
         if ($response->ResultStatus == "SUCCESS") {
             return "Message sent successfully";
         }
+
+        return $response->ResultStatus;
     }
 
     /**
      * @return string
      */
-    private function hashableKey () : string
+    private function hashableKey (): string
     {
-        $hashableKey = "AccountId=". $this->accountId ."&Password=". $this->password;
+        $hashableKey = "AccountId=" . $this->accountId . "&Password=" . $this->password;
         foreach ($this->recipients as $recipient) {
-            $hashableKey .= "&SenderName=". $this->senderName ."&ReceiverMSISDN=". $recipient ."&SMSText=". $this->message;
+            $hashableKey .= "&SenderName=" . $this->senderName . "&ReceiverMSISDN=" . $recipient . "&SMSText=" . $this->message;
         }
         return $hashableKey;
+    }
+
+    /**
+     * Build Vodafone request payload.
+     *
+     * @return string
+     */
+    public function payload ()
+    {
+        $secureHash = strtoupper(hash_hmac('SHA256', $this->hashableKey(), $this->secureHash));
+
+        return (new VodafoneXMLRequestBodyBuilder(
+            $this->accountId,
+            $this->password,
+            $this->senderName,
+            $secureHash,
+            $this->recipients,
+            $this->message
+        ))->build();
     }
 }
