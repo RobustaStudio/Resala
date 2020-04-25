@@ -3,7 +3,6 @@
 
 namespace RobustTools\SMS\Support;
 
-
 use DOMAttr;
 use DOMDocument;
 use DOMElement;
@@ -56,7 +55,7 @@ final class VodafoneXMLRequestBodyBuilder
      * @param array $recipients
      * @param string $message
      */
-    public function __construct (string $accountId, string $password, string $senderName, string $secureHash, array $recipients, string $message)
+    public function __construct (string $accountId, string $password, string $senderName, string $secureHash, $recipients, string $message)
     {
         $this->secureHash = $secureHash;
         $this->accountId = $accountId;
@@ -85,8 +84,12 @@ final class VodafoneXMLRequestBodyBuilder
         $this->generatePasswordElement($root);
         $this->generateSecureHashElement($root);
 
-        foreach ($this->recipients as $recipient) {
-            $this->generateSMSListElement($root, $recipient);
+        if (is_array($this->recipients)) {
+            foreach ($this->recipients as $recipient) {
+                $this->generateSMSListElement($root, $recipient);
+            }
+        } else {
+            $this->generateSMSListElement($root, $this->recipients);
         }
 
         $this->domDocument->appendChild($root);
