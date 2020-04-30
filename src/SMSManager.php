@@ -25,6 +25,19 @@ final class SMSManager
     }
 
     /**
+     * @param string $smsServiceProviderDriver
+     * @return SMSManager
+     * @throws UndefinedDriver
+     * @throws ReflectionException
+     */
+    public function via (string $smsServiceProviderDriver): SMSManager
+    {
+        $this->smsServiceProviderDriver = $this->getDriverInstance($smsServiceProviderDriver);
+
+        return $this;
+    }
+
+    /**
      * @param string|array $recipients
      * @return $this
      */
