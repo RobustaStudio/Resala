@@ -38,10 +38,6 @@ class HTTPClient
             $requestBody
         ]);
 
-        if ($response->getStatusCode() == 400) {
-            throw new BadRequestException($response->getBody()->getContents());
-        }
-
         if ($response->getstatusCode() == 401) {
             throw new UnauthorizedException('Unauthorized: Access is denied due to invalid credentials');
         }
