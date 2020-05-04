@@ -21,7 +21,7 @@ composer require robust-tools/resala
 
 ## Configure
 
-You can optionally publish the config file with:
+publish the config file with:
 
 ```bash
 php artisan vendor:publish --provider="RobustTools\SMS\SMSServiceProvider" --tag="config"
