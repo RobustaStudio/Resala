@@ -6,6 +6,12 @@ use RobustTools\SMS\Drivers\VodafoneDriver;
 return [
 
     /*
+     * You can specify a default service provider driver here.
+     * If it is not set we'll use vodafone as the default driver.
+     */
+    'default' => env('SERVICE_PROVIDER_DRIVER', 'vodafone'),
+
+    /*
     |--------------------------------------------------------------------------
     | List of sms drivers
     |--------------------------------------------------------------------------
@@ -46,10 +52,4 @@ return [
         'vodafone' => VodafoneDriver::class,
         'connekio' => ConnekioDriver::class
     ],
-
-    /*
-     * You can specify a default service provider driver here.
-     * If it is not set we'll use vodafone as the default driver.
-     */
-    'default_driver' => env('SERVICE_PROVIDER_DRIVER', 'vodafone'),
 ];

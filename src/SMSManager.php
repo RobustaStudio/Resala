@@ -21,7 +21,7 @@ final class SMSManager
      */
     public function __construct()
     {
-        $this->smsServiceProviderDriver = $this->getDriverInstance(config('resala.default_driver'));
+        $this->smsServiceProviderDriver = $this->getDriverInstance(config('resala.default'));
     }
 
     /**
