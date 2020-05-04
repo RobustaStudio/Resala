@@ -25,17 +25,16 @@ class HTTPClient
     /**
      * @param string $endpoint
      * @param array $headers
-     * @param $requestBody
+     * @param $payload
      * @return GuzzleHttp\Psr7\Response|SimpleXMLElement
-     * @throws UnauthorizedException
-     * @throws BadRequestException
      * @throws InternalServerErrorException
+     * @throws UnauthorizedException
      */
-    public function post (string $endpoint, array $headers, $requestBody)
+    public function post (string $endpoint, array $headers, $payload)
     {
         $response = $this->client->request('POST', $endpoint, [
             'headers' => $headers,
-            $requestBody
+            'body' => $payload
         ]);
 
         if ($response->getstatusCode() == 401) {

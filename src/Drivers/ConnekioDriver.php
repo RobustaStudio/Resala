@@ -67,33 +67,29 @@ final class ConnekioDriver extends Driver implements SMSServiceProviderDriverInt
     /**
      * Build connekio request payload.
      *
-     * @return array
+     * @return string
      */
-    public function payload (): array
+    public function payload (): string
     {
         if (!$this->isSendingToMultipleRecipients($this->recipients)) {
-            return [
-                "body" => json_encode([
-                    "account_id" => $this->accountId,
-                    "text" => $this->message,
-                    "msisdn" => $this->recipients,
-                    "sender" => $this->senderName
-                ])
-            ];
+            json_encode([
+                "account_id" => $this->accountId,
+                "text" => $this->message,
+                "msisdn" => $this->recipients,
+                "sender" => $this->senderName
+            ]);
         }
 
         foreach ($this->recipients as $recipient) {
             $mobileList[]['msisdn'] = $recipient;
         }
 
-        return [
-            "body" => json_encode([
-                "account_id" => $this->accountId,
-                "text" => $this->message,
-                "sender" => $this->senderName,
-                "mobile_list" => $mobileList,
-            ])
-        ];
+        return json_encode([
+            "account_id" => $this->accountId,
+            "text" => $this->message,
+            "sender" => $this->senderName,
+            "mobile_list" => $mobileList,
+        ]);
 
     }
 

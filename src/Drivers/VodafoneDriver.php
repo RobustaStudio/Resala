@@ -98,22 +98,20 @@ final class VodafoneDriver extends Driver implements SMSServiceProviderDriverInt
     /**
      * Build Vodafone request payload.
      *
-     * @return array
+     * @return string
      */
-    public function payload (): array
+    public function payload (): string
     {
         $secureHash = strtoupper(hash_hmac('SHA256', $this->hashableKey(), $this->secureHash));
 
-        return [
-            "body" => (new VodafoneXMLRequestBodyBuilder(
-                $this->accountId,
-                $this->password,
-                $this->senderName,
-                $secureHash,
-                $this->recipients,
-                $this->message
-            ))->build()
-        ];
+        return (new VodafoneXMLRequestBodyBuilder(
+            $this->accountId,
+            $this->password,
+            $this->senderName,
+            $secureHash,
+            $this->recipients,
+            $this->message
+        ))->build();
     }
 
     /**

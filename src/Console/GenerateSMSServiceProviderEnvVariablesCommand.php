@@ -52,7 +52,7 @@ class GenerateSMSServiceProviderEnvVariablesCommand extends Command
 
             $content = $this->getStubContent();
             File::append($this->getEnvPath(), $content);
-            $this->info("vodafone environment variables set successfully...");
+            $this->info("environment variables set successfully...");
             return;
         }
         $this->warn("check if the .env file exists or vodafone variables might already exists");
