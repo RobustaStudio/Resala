@@ -103,7 +103,13 @@ SMS::to(['010xxxxxxxx', '011xxxxxxxx'])
     ->message("Hello World")
     ->send();
 ```
-
+you can optionally change the driver using the `via` method
+```php
+SMS::via('connekio')
+    ->to('010xxxxxxxx')
+    ->message("Hello World")
+    ->send();
+```
 ### Changelog
 
 Please see [CHANGELOG](CHANGELOG.md) for more information what has changed recently.
