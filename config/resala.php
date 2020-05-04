@@ -9,7 +9,7 @@ return [
      * You can specify a default service provider driver here.
      * If it is not set we'll use vodafone as the default driver.
      */
-    'default' => env('SERVICE_PROVIDER_DRIVER', 'vodafone'),
+    'default' => env('SMS_DRIVER', 'vodafone'),
 
     /*
     |--------------------------------------------------------------------------
