@@ -128,21 +128,13 @@ final class VodafoneDriver extends Driver implements SMSServiceProviderDriverInt
 
     /**
      * @return string
-     * @throws VodafoneInvalidRequestException|UnauthorizedException|BadRequestException|InternalServerErrorException
+     * @throws UnauthorizedException|InternalServerErrorException
      */
     public function send (): string
     {
         $response = (new HTTPClient())->post($this->endPoint, $this->headers(), $this->payload());
 
-        if ($response->ResultStatus == "INVALID_REQUEST") {
-            throw new VodafoneInvalidRequestException($response->Description);
-        }
-
-        if ($response->ResultStatus == "SUCCESS") {
-            return "Message sent successfully";
-        }
-
-        return $response->ResultStatus;
+        return $response->getBody()->getContents();
     }
 
 }
