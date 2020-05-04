@@ -59,7 +59,26 @@ return [
             "account_id" => env("CONNEKIO_ACCOUNT_ID"),
             "sender_name" => env("CONNEKIO_SENDER_NAME")
         ]
-    ]
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Class Maps
+    |--------------------------------------------------------------------------
+    |
+    |
+    | This is a list of Classes that maps to the Drivers above.
+    */
+    'map' => [
+        'vodafone' => VodafoneDriver::class,
+        'connekio' => ConnekioDriver::class
+    ],
+
+    /*
+     * You can specify a default service provider driver here.
+     * If it is not set we'll use vodafone as the default driver.
+     */
+    'default_driver' => env('SERVICE_PROVIDER_DRIVER', 'vodafone'),
 ];
 ```
 
@@ -76,13 +95,11 @@ This adds connekio environment variables to your .env file.
 ## Usage
 
 ``` php
-SMS::via('vodafone')
-    ->to('010xxxxxxxx')
+SMS::to('010xxxxxxxx')
     ->message("Hello World")
     ->send();
 
-SMS::via('connekio')
-    ->to(['010xxxxxxxx', '011xxxxxxxx'])
+SMS::to(['010xxxxxxxx', '011xxxxxxxx'])
     ->message("Hello World")
     ->send();
 ```
