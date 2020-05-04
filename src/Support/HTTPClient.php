@@ -26,7 +26,7 @@ class HTTPClient
      * @param string $endpoint
      * @param array $headers
      * @param $payload
-     * @return GuzzleHttp\Psr7\Response|SimpleXMLElement
+     * @return ResponseInterface|SimpleXMLElement
      * @throws InternalServerErrorException
      * @throws UnauthorizedException
      */
@@ -64,11 +64,11 @@ class HTTPClient
 
     /**
      * Detect response content type.
-     * @param $contentTYpe
+     * @param $contentType
      * @return bool
      */
-    private function isXML ($contentTYpe): bool
+    private function isXML ($contentType): bool
     {
-        return array_pop($contentTYpe) == "application/xml";
+        return array_pop($contentType) == "application/xml";
     }
 }

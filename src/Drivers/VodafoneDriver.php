@@ -5,10 +5,8 @@ namespace RobustTools\SMS\Drivers;
 
 use RobustTools\SMS\abstracts\Driver;
 use RobustTools\SMS\Contracts\SMSServiceProviderDriverInterface;
-use RobustTools\SMS\Exceptions\BadRequestException;
 use RobustTools\SMS\Exceptions\InternalServerErrorException;
 use RobustTools\SMS\Exceptions\UnauthorizedException;
-use RobustTools\SMS\Exceptions\VodafoneInvalidRequestException;
 use RobustTools\SMS\Support\HTTPClient;
 use RobustTools\SMS\Support\VodafoneXMLRequestBodyBuilder;
 
@@ -132,7 +130,7 @@ final class VodafoneDriver extends Driver implements SMSServiceProviderDriverInt
     {
         $response = (new HTTPClient())->post($this->endPoint, $this->headers(), $this->payload());
 
-        return $response->getBody()->getContents();
+        return $response->Description;
     }
 
 }
