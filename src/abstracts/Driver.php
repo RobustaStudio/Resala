@@ -18,9 +18,9 @@ abstract class Driver implements SMSServiceProviderDriverInterface
     /**
      * Build Driver request payload.
      *
-     * @return array
+     * @return string
      */
-    abstract public function payload (): array;
+    abstract public function payload (): string ;
 
     /**
      * Set Driver request headers.

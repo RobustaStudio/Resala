@@ -5,10 +5,8 @@ namespace RobustTools\SMS\Drivers;
 
 use RobustTools\SMS\abstracts\Driver;
 use RobustTools\SMS\Contracts\SMSServiceProviderDriverInterface;
-use RobustTools\SMS\Exceptions\BadRequestException;
 use RobustTools\SMS\Exceptions\InternalServerErrorException;
 use RobustTools\SMS\Exceptions\UnauthorizedException;
-use RobustTools\SMS\Exceptions\VodafoneInvalidRequestException;
 use RobustTools\SMS\Support\HTTPClient;
 use RobustTools\SMS\Support\VodafoneXMLRequestBodyBuilder;
 
@@ -98,22 +96,20 @@ final class VodafoneDriver extends Driver implements SMSServiceProviderDriverInt
     /**
      * Build Vodafone request payload.
      *
-     * @return array
+     * @return string
      */
-    public function payload (): array
+    public function payload (): string
     {
         $secureHash = strtoupper(hash_hmac('SHA256', $this->hashableKey(), $this->secureHash));
 
-        return [
-            "body" => (new VodafoneXMLRequestBodyBuilder(
-                $this->accountId,
-                $this->password,
-                $this->senderName,
-                $secureHash,
-                $this->recipients,
-                $this->message
-            ))->build()
-        ];
+        return (new VodafoneXMLRequestBodyBuilder(
+            $this->accountId,
+            $this->password,
+            $this->senderName,
+            $secureHash,
+            $this->recipients,
+            $this->message
+        ))->build();
     }
 
     /**
@@ -128,21 +124,13 @@ final class VodafoneDriver extends Driver implements SMSServiceProviderDriverInt
 
     /**
      * @return string
-     * @throws VodafoneInvalidRequestException|UnauthorizedException|BadRequestException|InternalServerErrorException
+     * @throws UnauthorizedException|InternalServerErrorException
      */
     public function send (): string
     {
         $response = (new HTTPClient())->post($this->endPoint, $this->headers(), $this->payload());
 
-        if ($response->ResultStatus == "INVALID_REQUEST") {
-            throw new VodafoneInvalidRequestException($response->Description);
-        }
-
-        if ($response->ResultStatus == "SUCCESS") {
-            return "Message sent successfully";
-        }
-
-        return $response->ResultStatus;
+        return $response->Description;
     }
 
 }

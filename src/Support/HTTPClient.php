@@ -25,22 +25,17 @@ class HTTPClient
     /**
      * @param string $endpoint
      * @param array $headers
-     * @param $requestBody
-     * @return GuzzleHttp\Psr7\Response|SimpleXMLElement
-     * @throws UnauthorizedException
-     * @throws BadRequestException
+     * @param $payload
+     * @return ResponseInterface|SimpleXMLElement
      * @throws InternalServerErrorException
+     * @throws UnauthorizedException
      */
-    public function post (string $endpoint, array $headers, $requestBody)
+    public function post (string $endpoint, array $headers, $payload)
     {
         $response = $this->client->request('POST', $endpoint, [
             'headers' => $headers,
-            $requestBody
+            'body' => $payload
         ]);
-
-        if ($response->getStatusCode() == 400) {
-            throw new BadRequestException($response->getBody()->getContents());
-        }
 
         if ($response->getstatusCode() == 401) {
             throw new UnauthorizedException('Unauthorized: Access is denied due to invalid credentials');
@@ -69,11 +64,11 @@ class HTTPClient
 
     /**
      * Detect response content type.
-     * @param $contentTYpe
+     * @param $contentType
      * @return bool
      */
-    private function isXML ($contentTYpe): bool
+    private function isXML ($contentType): bool
     {
-        return array_pop($contentTYpe) == "application/xml";
+        return array_pop($contentType) == "application/xml";
     }
 }

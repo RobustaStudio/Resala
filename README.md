@@ -21,7 +21,7 @@ composer require robust-tools/resala
 
 ## Configure
 
-You can optionally publish the config file with:
+publish the config file with:
 
 ```bash
 php artisan vendor:publish --provider="RobustTools\SMS\SMSServiceProvider" --tag="config"
@@ -33,6 +33,12 @@ This is the contents of the published config file:
 return [
 
     /*
+         * You can specify a default service provider driver here.
+         * If it is not set we'll use vodafone as the default driver.
+         */
+        'default' => env('SMS_DRIVER', 'vodafone'),
+    /*
+
     |--------------------------------------------------------------------------
     | List of sms drivers
     |--------------------------------------------------------------------------
@@ -59,7 +65,20 @@ return [
             "account_id" => env("CONNEKIO_ACCOUNT_ID"),
             "sender_name" => env("CONNEKIO_SENDER_NAME")
         ]
-    ]
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Class Maps
+    |--------------------------------------------------------------------------
+    |
+    |
+    | This is a list of Classes that maps to the Drivers above.
+    */
+    'map' => [
+        'vodafone' => VodafoneDriver::class,
+        'connekio' => ConnekioDriver::class
+    ],
 ];
 ```
 
@@ -76,17 +95,21 @@ This adds connekio environment variables to your .env file.
 ## Usage
 
 ``` php
-SMS::via('vodafone')
-    ->to('010xxxxxxxx')
+SMS::to('010xxxxxxxx')
     ->message("Hello World")
     ->send();
 
-SMS::via('connekio')
-    ->to(['010xxxxxxxx', '011xxxxxxxx'])
+SMS::to(['010xxxxxxxx', '011xxxxxxxx'])
     ->message("Hello World")
     ->send();
 ```
-
+you can optionally change the driver using the `via` method
+```php
+SMS::via('connekio')
+    ->to('010xxxxxxxx')
+    ->message("Hello World")
+    ->send();
+```
 ### Changelog
 
 Please see [CHANGELOG](CHANGELOG.md) for more information what has changed recently.
