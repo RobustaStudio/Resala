@@ -64,7 +64,14 @@ return [
             "password" => env("CONNEKIO_PASSWORD"),
             "account_id" => env("CONNEKIO_ACCOUNT_ID"),
             "sender_name" => env("CONNEKIO_SENDER_NAME")
-        ]
+        ],
+
+        'infobip' => [
+            'end_point' => env('INFOBIP_END_POINT'),
+            'username' => env('INFOBIP_USERNAME'),
+            'password' => env('INFOBIP_PASSWORD'),
+            'sender_name' => env('INFOBIP_SENDER_NAME', 'Infobip')
+        ],
     ],
 
     /*
@@ -77,7 +84,8 @@ return [
     */
     'map' => [
         'vodafone' => VodafoneDriver::class,
-        'connekio' => ConnekioDriver::class
+        'connekio' => ConnekioDriver::class,
+        'infobip' => InfobipDriver::class
     ],
 ];
 ```
@@ -107,6 +115,11 @@ you can optionally change the driver using the `via` method
 ```php
 SMS::via('connekio')
     ->to('010xxxxxxxx')
+    ->message("Hello World")
+    ->send();
+
+SMS::via('infobip')
+    ->to('2012xxxxxxxx')
     ->message("Hello World")
     ->send();
 ```
