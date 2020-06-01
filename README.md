@@ -1,15 +1,16 @@
 # Laravel SMS Gateway Integration Package
 
-[![Latest Version on Packagist](https://img.shields.io/packagist/v/robust-tools/sms.svg?style=flat-square)](https://packagist.org/packages/robust-tools/sms)
-[![Build Status](https://img.shields.io/travis/robust-tools/sms/master.svg?style=flat-square)](https://travis-ci.org/robust-tools/sms)
-[![Quality Score](https://img.shields.io/scrutinizer/g/robust-tools/sms.svg?style=flat-square)](https://scrutinizer-ci.com/g/robust-tools/sms)
-[![Total Downloads](https://img.shields.io/packagist/dt/robust-tools/sms.svg?style=flat-square)](https://packagist.org/packages/robust-tools/sms)
+[![Latest Version on Packagist](https://img.shields.io/packagist/v/robust-tools/resala.svg?style=flat-square)](https://packagist.org/packages/robust-tools/resala)
+[![Build Status](https://img.shields.io/travis/robust-tools/resala/master.svg?style=flat-square)](https://travis-ci.org/robust-tools/resala)
+[![Quality Score](https://img.shields.io/scrutinizer/g/robust-tools/resala.svg?style=flat-square)](https://scrutinizer-ci.com/g/robust-tools/resala)
+[![Total Downloads](https://img.shields.io/packagist/dt/robust-tools/resala.svg?style=flat-square)](https://packagist.org/packages/robust-tools/resala)
 
 Laravel SMS Gateway Integration Package
 
 ## Supported Providers
 - Vodafone SMS Gateway
 - Connekio SMS Gateway
+- InfoPib SMS Gateway
 
 ## Installation
 
