@@ -100,6 +100,11 @@ php artisan resala:make connekio
 ```
 This adds connekio environment variables to your .env file.
 
+```bash
+php artisan resala:make infobip
+```
+This adds infobip environment variables to your .env file.
+
 ## Usage
 
 ``` php
