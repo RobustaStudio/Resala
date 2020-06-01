@@ -1,6 +1,7 @@
 <?php
 
 use RobustTools\SMS\Drivers\ConnekioDriver;
+use RobustTools\SMS\Drivers\InfobipDriver;
 use RobustTools\SMS\Drivers\VodafoneDriver;
 
 return [
@@ -37,7 +38,14 @@ return [
             'password' => env('CONNEKIO_PASSWORD'),
             'account_id' => env('CONNEKIO_ACCOUNT_ID'),
             'sender_name' => env('CONNEKIO_SENDER_NAME')
-        ]
+        ],
+
+        'infobip' => [
+            'end_point' => env('INFOBIP_END_POINT'),
+            'username' => env('INFOBIP_USERNAME'),
+            'password' => env('INFOBIP_PASSWORD'),
+            'sender_name' => env('INFOBIP_SENDER_NAME', 'Infobip')
+        ],
     ],
 
     /*
@@ -50,6 +58,7 @@ return [
     */
     'map' => [
         'vodafone' => VodafoneDriver::class,
-        'connekio' => ConnekioDriver::class
+        'connekio' => ConnekioDriver::class,
+        'infobip' => InfobipDriver::class
     ],
 ];
