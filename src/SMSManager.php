@@ -7,6 +7,7 @@ use ReflectionClass;
 use ReflectionException;
 use RobustTools\SMS\Contracts\SMSServiceProviderDriverInterface;
 use RobustTools\SMS\Exceptions\UndefinedDriver;
+use RobustTools\SMS\Support\Config;
 
 final class SMSManager
 {
@@ -16,12 +17,20 @@ final class SMSManager
     private $smsServiceProviderDriver;
 
     /**
-     * @throws UndefinedDriver
-     * @throws ReflectionException
+     * @var Config
      */
-    public function __construct()
+    private $config;
+
+    /**
+     * @param null $configFilePath
+     * @throws Exceptions\ConfigFileNotFoundException
+     * @throws ReflectionException
+     * @throws UndefinedDriver
+     */
+    public function __construct ($configFilePath = null)
     {
-        $this->smsServiceProviderDriver = $this->getDriverInstance(config('resala.default'));
+        $this->config = new Config($configFilePath);
+        $this->smsServiceProviderDriver = $this->getDriverInstance($this->config->get('default'));
     }
 
     /**
@@ -33,7 +42,6 @@ final class SMSManager
     public function via (string $smsServiceProviderDriver): SMSManager
     {
         $this->smsServiceProviderDriver = $this->getDriverInstance($smsServiceProviderDriver);
-
         return $this;
     }
 
@@ -41,7 +49,7 @@ final class SMSManager
      * @param string|array $recipients
      * @return $this
      */
-    public function to($recipients): SMSManager
+    public function to ($recipients): SMSManager
     {
         $this->smsServiceProviderDriver->to($recipients);
         return $this;
@@ -51,7 +59,7 @@ final class SMSManager
      * @param string $message
      * @return $this
      */
-    public function message(string $message): SMSManager
+    public function message (string $message): SMSManager
     {
         $this->smsServiceProviderDriver->message($message);
         return $this;
@@ -60,7 +68,7 @@ final class SMSManager
     /**
      * @return string
      */
-    public function send(): string
+    public function send (): string
     {
         return $this->smsServiceProviderDriver->send();
     }
@@ -73,13 +81,13 @@ final class SMSManager
      * @throws UndefinedDriver
      * @throws Exception
      */
-    private function driverValidation(string $driver)
+    private function driverValidation (string $driver)
     {
-        if (!array_key_exists($driver, config('resala.map'))) {
+        if (!array_key_exists($driver, $this->config->get('map'))) {
             throw new UndefinedDriver("Unknown Driver");
         }
 
-        if (!(new ReflectionClass(config('resala.map')[$driver]))->implementsInterface(SMSServiceProviderDriverInterface::class)) {
+        if (!(new ReflectionClass($this->config->get('map')[$driver]))->implementsInterface(SMSServiceProviderDriverInterface::class)) {
             throw new Exception("Provided driver must respect SMSServiceProviderDriverInterface contract");
         }
     }
@@ -90,11 +98,11 @@ final class SMSManager
      * @throws ReflectionException
      * @throws UndefinedDriver
      */
-    private function getDriverInstance(string $driver): SMSServiceProviderDriverInterface
+    private function getDriverInstance (string $driver): SMSServiceProviderDriverInterface
     {
         $this->driverValidation($driver);
-        $class = config('resala.map')[$driver];
-        return new $class;
+        $class = $this->config->get('map')[$driver];
+        return new $class($this->config->get('drivers')[$driver]);
     }
 }
 

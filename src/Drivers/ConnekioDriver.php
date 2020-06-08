@@ -5,7 +5,6 @@ namespace RobustTools\SMS\Drivers;
 
 use RobustTools\SMS\abstracts\Driver;
 use RobustTools\SMS\Contracts\SMSServiceProviderDriverInterface;
-use RobustTools\SMS\Exceptions\BadRequestException;
 use RobustTools\SMS\Exceptions\InternalServerErrorException;
 use RobustTools\SMS\Exceptions\UnauthorizedException;
 use RobustTools\SMS\Support\HTTPClient;
@@ -42,12 +41,24 @@ final class ConnekioDriver extends Driver implements SMSServiceProviderDriverInt
      */
     private $senderName;
 
-    public function __construct ()
+    /**
+     * @var string
+     */
+    private $singleSmsEndPoint;
+
+    /**
+     * @var string
+     */
+    private $batchSmsEndPoint;
+
+    public function __construct (array $config)
     {
-        $this->accountId = config("resala.drivers.connekio.account_id");
-        $this->username = config("resala.drivers.connekio.username");
-        $this->password = config("resala.drivers.connekio.password");
-        $this->senderName = config("resala.drivers.connekio.sender_name");
+        $this->accountId = $config["account_id"];
+        $this->username = $config["username"];
+        $this->password = $config["password"];
+        $this->senderName = $config["sender_name"];
+        $this->singleSmsEndPoint = $config["single_sms_endpoint"];
+        $this->batchSmsEndPoint = $config["batch_sms_endpoint"];
     }
 
     /**
@@ -125,13 +136,13 @@ final class ConnekioDriver extends Driver implements SMSServiceProviderDriverInt
     private function endpoint (): string
     {
         return $this->isSendingToMultipleRecipients($this->recipients)
-            ? config("resala.drivers.connekio.single_sms_endpoint")
-            : config("resala.drivers.connekio.batch_sms_endpoint");
+            ? $this->batchSmsEndPoint
+            : $this->singleSmsEndPoint;
     }
 
     /**
      * @return string
-     * @throws UnauthorizedException|BadRequestException|InternalServerErrorException
+     * @throws UnauthorizedException|InternalServerErrorException
      */
     public function send (): string
     {

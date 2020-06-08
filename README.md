@@ -1,11 +1,12 @@
-# Laravel SMS Gateway Integration Package
+# PHP & Laravel SMS Gateway Integration Package
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/robust-tools/resala.svg?style=flat-square)](https://packagist.org/packages/robust-tools/resala)
 [![Build Status](https://img.shields.io/travis/robust-tools/resala/master.svg?style=flat-square)](https://travis-ci.org/robust-tools/resala)
 [![Quality Score](https://img.shields.io/scrutinizer/g/robust-tools/resala.svg?style=flat-square)](https://scrutinizer-ci.com/g/robust-tools/resala)
 [![Total Downloads](https://img.shields.io/packagist/dt/robust-tools/resala.svg?style=flat-square)](https://packagist.org/packages/robust-tools/resala)
 
-Laravel SMS Gateway Integration Package
+**Resala** is a PHP & Laravel Package, (Designed to add support to your laravel or just native php app for sending SMS using local operators in the MENA region Like `Vodafone`, `Infopib`, `Conneckio`).  
+**Resala** not just tied to use inside Laravel you can hook it up in any php code
 
 ## Supported Providers
 - Vodafone SMS Gateway
@@ -19,6 +20,7 @@ You can install the package via composer:
 ```bash
 composer require robust-tools/resala
 ```
+# Laravel Usage.
 
 ## Configure
 
@@ -34,12 +36,12 @@ This is the contents of the published config file:
 return [
 
     /*
-         * You can specify a default service provider driver here.
-         * If it is not set we'll use vodafone as the default driver.
-         */
-        'default' => env('SMS_DRIVER', 'vodafone'),
-    /*
+     * You can specify a default service provider driver here.
+     * If it is not set we'll use vodafone as the default driver.
+     */
+    'default' => env('SMS_DRIVER', 'vodafone'),
 
+    /*
     |--------------------------------------------------------------------------
     | List of sms drivers
     |--------------------------------------------------------------------------
@@ -48,23 +50,23 @@ return [
     |
     */
 
-    "drivers" => [
+    'drivers' => [
 
-        "vodafone" => [
-            "end_point" => env("VODAFONE_END_POINT"),
-            "account_id" => env("VODAFONE_ACCOUNT_ID"),
-            "password" => env("VODAFONE_PASSWORD"),
-            "secure_hash" => env("VODAFONE_SECURE_HASH"),
-            "sender_name" => env("VODAFONE_SENDER_NAME", "Vodafone")
+        'vodafone' => [
+            'end_point' => env('VODAFONE_END_POINT'),
+            'account_id' => env('VODAFONE_ACCOUNT_ID'),
+            'password' => env('VODAFONE_PASSWORD'),
+            'secure_hash' => env('VODAFONE_SECURE_HASH'),
+            'sender_name' => env('VODAFONE_SENDER_NAME', 'Vodafone')
         ],
 
-        "connekio" => [
-            "single_sms_endpoint" => env("SINGLE_SMS_ENDPOINT"),
-            "batch_sms_endpoint" => env("BATCH_SMS_ENDPOINT"),
-            "username" => env("CONNEKIO_USERNAME"),
-            "password" => env("CONNEKIO_PASSWORD"),
-            "account_id" => env("CONNEKIO_ACCOUNT_ID"),
-            "sender_name" => env("CONNEKIO_SENDER_NAME")
+        'connekio' => [
+            'single_sms_endpoint' => env('SINGLE_SMS_ENDPOINT'),
+            'batch_sms_endpoint' => env('BATCH_SMS_ENDPOINT'),
+            'username' => env('CONNEKIO_USERNAME'),
+            'password' => env('CONNEKIO_PASSWORD'),
+            'account_id' => env('CONNEKIO_ACCOUNT_ID'),
+            'sender_name' => env('CONNEKIO_SENDER_NAME')
         ],
 
         'infobip' => [
@@ -129,8 +131,28 @@ SMS::via('infobip')
     ->message("Hello World")
     ->send();
 ```
+
+#Outside Laravel
+You need to add a config file named `resala.php` in your project directory the contents of the config file must match the schema of the package config file you can find it [HERE](https://github.com/RobustaStudio/Resala/blob/master/config/resala.php). 
+just replace the `env(values)` with your driver config values.  
+
+##Usage
+
+```php
+use RobustTools\SMS\SMSManager;
+
+$configFile = __DIR__ . "/config/resala.php";
+
+(new SMSManager($configFile))->to(['010995162378', '012345522'])
+         ->message("Hello World")
+         ->send();
+```
+
+IF no configuration file is being passed a `ConfigFileNotFoundException` will be thrown.
+
 ### Changelog
 
+ 
 Please see [CHANGELOG](CHANGELOG.md) for more information what has changed recently.
 
 ## Contributing

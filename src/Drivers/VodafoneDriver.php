@@ -7,6 +7,7 @@ use RobustTools\SMS\abstracts\Driver;
 use RobustTools\SMS\Contracts\SMSServiceProviderDriverInterface;
 use RobustTools\SMS\Exceptions\InternalServerErrorException;
 use RobustTools\SMS\Exceptions\UnauthorizedException;
+use RobustTools\SMS\Support\Config;
 use RobustTools\SMS\Support\HTTPClient;
 use RobustTools\SMS\Support\VodafoneXMLRequestBodyBuilder;
 
@@ -47,14 +48,15 @@ final class VodafoneDriver extends Driver implements SMSServiceProviderDriverInt
 
     /**
      * VodafoneDriver constructor.
+     * @param array $config
      */
-    public function __construct ()
+    public function __construct (array $config)
     {
-        $this->accountId = config("resala.drivers.vodafone.account_id");
-        $this->password = config("resala.drivers.vodafone.password");
-        $this->senderName = config("resala.drivers.vodafone.sender_name");
-        $this->secureHash = config("resala.drivers.vodafone.secure_hash");
-        $this->endPoint = config("resala.drivers.vodafone.end_point");
+        $this->accountId = $config["account_id"];
+        $this->password = $config["password"];
+        $this->senderName = $config["sender_name"];
+        $this->secureHash = $config["secure_hash"];
+        $this->endPoint = $config["end_point"];
     }
 
     /**
