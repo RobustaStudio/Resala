@@ -3,7 +3,6 @@
 
 namespace RobustTools\SMS\Support;
 
-use RobustTools\SMS\Exceptions\BadRequestException;
 use RobustTools\SMS\Exceptions\InternalServerErrorException;
 use RobustTools\SMS\Exceptions\UnauthorizedException;
 use SimpleXMLElement;

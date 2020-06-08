@@ -12,15 +12,16 @@ abstract class Driver implements SMSServiceProviderDriverInterface
      * set every driver conf.
      *
      * Driver constructor.
+     * @param array $config
      */
-    abstract public function __construct ();
+    abstract public function __construct (array $config);
 
     /**
      * Build Driver request payload.
      *
      * @return string
      */
-    abstract public function payload (): string ;
+    abstract public function payload (): string;
 
     /**
      * Set Driver request headers.

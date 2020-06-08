@@ -103,5 +103,9 @@ class GenerateSMSServiceProviderEnvVariablesCommand extends Command
         if ($this->argument('driver') == "connekio") {
             return File::get(__DIR__ . "/../../stubs/connekio.env.stub");
         }
+
+        if ($this->argument('driver') == "infobip") {
+            return File::get(__DIR__ . "/../../stubs/infobip.env.stub");
+        }
     }
 }
