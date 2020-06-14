@@ -1,7 +1,7 @@
 <?php
 
 
-namespace RobustTools\SMS\abstracts;
+namespace RobustTools\SMS\Abstracts;
 
 use RobustTools\SMS\Contracts\SMSServiceProviderDriverInterface;
 
