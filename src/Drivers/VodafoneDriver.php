@@ -3,11 +3,10 @@
 
 namespace RobustTools\SMS\Drivers;
 
-use RobustTools\SMS\abstracts\Driver;
+use RobustTools\SMS\Abstracts\Driver;
 use RobustTools\SMS\Contracts\SMSServiceProviderDriverInterface;
 use RobustTools\SMS\Exceptions\InternalServerErrorException;
 use RobustTools\SMS\Exceptions\UnauthorizedException;
-use RobustTools\SMS\Support\Config;
 use RobustTools\SMS\Support\HTTPClient;
 use RobustTools\SMS\Support\VodafoneXMLRequestBodyBuilder;
 
