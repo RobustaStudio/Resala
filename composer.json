@@ -21,7 +21,7 @@
         "ext-dom": "*",
         "ext-simplexml": "*",
         "guzzlehttp/guzzle": "^6.5",
-        "illuminate/support": "^6.*|^7.*",
+        "illuminate/support": "^6.18|^7.0",
         "ext-json": "*"
     },
     "require-dev": {
