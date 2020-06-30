@@ -1,5 +1,4 @@
 <?php
-
 namespace RobustTools\SMS\Facades;
 
 use Illuminate\Support\Facades\Facade;

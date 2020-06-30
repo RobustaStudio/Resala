@@ -1,5 +1,4 @@
 <?php
-
 namespace RobustTools\SMS;
 
 use Exception;
@@ -27,7 +26,7 @@ final class SMSManager
      * @throws ReflectionException
      * @throws UndefinedDriver
      */
-    public function __construct ($configFilePath = null)
+    public function __construct($configFilePath = null)
     {
         $this->config = new Config($configFilePath);
         $this->smsServiceProviderDriver = $this->getDriverInstance($this->config->get('default'));
@@ -39,9 +38,10 @@ final class SMSManager
      * @throws UndefinedDriver
      * @throws ReflectionException
      */
-    public function via (string $smsServiceProviderDriver): SMSManager
+    public function via(string $smsServiceProviderDriver): SMSManager
     {
         $this->smsServiceProviderDriver = $this->getDriverInstance($smsServiceProviderDriver);
+
         return $this;
     }
 
@@ -49,9 +49,10 @@ final class SMSManager
      * @param string|array $recipients
      * @return $this
      */
-    public function to ($recipients): SMSManager
+    public function to($recipients): SMSManager
     {
         $this->smsServiceProviderDriver->to($recipients);
+
         return $this;
     }
 
@@ -59,16 +60,17 @@ final class SMSManager
      * @param string $message
      * @return $this
      */
-    public function message (string $message): SMSManager
+    public function message(string $message): SMSManager
     {
         $this->smsServiceProviderDriver->message($message);
+
         return $this;
     }
 
     /**
      * @return string
      */
-    public function send (): string
+    public function send(): string
     {
         return $this->smsServiceProviderDriver->send();
     }
@@ -81,7 +83,7 @@ final class SMSManager
      * @throws UndefinedDriver
      * @throws Exception
      */
-    private function driverValidation (string $driver)
+    private function driverValidation(string $driver)
     {
         if (!array_key_exists($driver, $this->config->get('map'))) {
             throw new UndefinedDriver("Unknown Driver");
@@ -98,10 +100,11 @@ final class SMSManager
      * @throws ReflectionException
      * @throws UndefinedDriver
      */
-    private function getDriverInstance (string $driver): SMSServiceProviderDriverInterface
+    private function getDriverInstance(string $driver): SMSServiceProviderDriverInterface
     {
         $this->driverValidation($driver);
         $class = $this->config->get('map')[$driver];
+
         return new $class($this->config->get('drivers')[$driver]);
     }
 }

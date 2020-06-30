@@ -1,6 +1,4 @@
 <?php
-
-
 namespace RobustTools\SMS\Drivers;
 
 use RobustTools\SMS\Abstracts\Driver;
@@ -51,7 +49,7 @@ final class ConnekioDriver extends Driver implements SMSServiceProviderDriverInt
      */
     private $batchSmsEndPoint;
 
-    public function __construct (array $config)
+    public function __construct(array $config)
     {
         $this->accountId = $config["account_id"];
         $this->username = $config["username"];
@@ -65,12 +63,12 @@ final class ConnekioDriver extends Driver implements SMSServiceProviderDriverInt
      * @param string|array $recipients
      * @return string|array
      */
-    public function to ($recipients)
+    public function to($recipients)
     {
         return $this->recipients = $recipients;
     }
 
-    public function message (string $message): string
+    public function message(string $message): string
     {
         return $this->message = $message;
     }
@@ -80,7 +78,7 @@ final class ConnekioDriver extends Driver implements SMSServiceProviderDriverInt
      *
      * @return string
      */
-    public function payload (): string
+    public function payload(): string
     {
         if (!$this->isSendingToMultipleRecipients($this->recipients)) {
             json_encode([
@@ -101,17 +99,6 @@ final class ConnekioDriver extends Driver implements SMSServiceProviderDriverInt
             "sender" => $this->senderName,
             "mobile_list" => $mobileList,
         ]);
-
-    }
-
-    /**
-     * Encode authorization credentials using base64.
-     *
-     * @return string
-     */
-    private function authorization ()
-    {
-        return base64_encode($this->username . $this->password . $this->accountId);
     }
 
     /**
@@ -119,7 +106,7 @@ final class ConnekioDriver extends Driver implements SMSServiceProviderDriverInt
      *
      * @return array|string[]
      */
-    public function headers (): array
+    public function headers(): array
     {
         return [
             'Content-Type' => 'application/json',
@@ -129,27 +116,37 @@ final class ConnekioDriver extends Driver implements SMSServiceProviderDriverInt
     }
 
     /**
-     * Specify request endpoint based on is it sing or batch.
-     *
-     * @return string
-     */
-    private function endpoint (): string
-    {
-        return $this->isSendingToMultipleRecipients($this->recipients)
-            ? $this->batchSmsEndPoint
-            : $this->singleSmsEndPoint;
-    }
-
-    /**
      * @return string
      * @throws UnauthorizedException|InternalServerErrorException
      */
-    public function send (): string
+    public function send(): string
     {
         $response = (new HTTPClient())->post($this->endpoint(), $this->headers(), $this->payload());
 
         return ($response->getstatusCode() == 200)
             ? "Message sent successfully"
             : "Message couldn't be sent";
+    }
+
+    /**
+     * Encode authorization credentials using base64.
+     *
+     * @return string
+     */
+    private function authorization()
+    {
+        return base64_encode($this->username . $this->password . $this->accountId);
+    }
+
+    /**
+     * Specify request endpoint based on is it sing or batch.
+     *
+     * @return string
+     */
+    private function endpoint(): string
+    {
+        return $this->isSendingToMultipleRecipients($this->recipients)
+            ? $this->batchSmsEndPoint
+            : $this->singleSmsEndPoint;
     }
 }

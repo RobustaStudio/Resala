@@ -3,6 +3,7 @@ composer.lock
 docs
 vendor
 coverage
+.php_cs.cache
 
 ### PhpStorm ###
 .idea

@@ -1,6 +1,4 @@
 <?php
-
-
 namespace RobustTools\SMS\Support;
 
 use DOMAttr;
@@ -9,7 +7,6 @@ use DOMElement;
 
 final class VodafoneXMLRequestBodyBuilder
 {
-
     /**
      * @var DOMDocument
      */
@@ -45,7 +42,6 @@ final class VodafoneXMLRequestBodyBuilder
      */
     private $recipients;
 
-
     /**
      * VodafoneXMLRequestBodyRenderer constructor.
      * @param string $accountId
@@ -55,7 +51,7 @@ final class VodafoneXMLRequestBodyBuilder
      * @param array $recipients
      * @param string $message
      */
-    public function __construct (string $accountId, string $password, string $senderName, string $secureHash, $recipients, string $message)
+    public function __construct(string $accountId, string $password, string $senderName, string $secureHash, $recipients, string $message)
     {
         $this->secureHash = $secureHash;
         $this->accountId = $accountId;
@@ -69,15 +65,13 @@ final class VodafoneXMLRequestBodyBuilder
         $this->recipients = $recipients;
     }
 
-
     /**
      * Build request XML Body
      *
      * @return string
      */
-    public function build ()
+    public function build()
     {
-
         $root = $this->rootElement();
         $this->setRootElementAttributes($root);
         $this->generateAccountIdElement($root);
@@ -93,16 +87,16 @@ final class VodafoneXMLRequestBodyBuilder
         }
 
         $this->domDocument->appendChild($root);
+
         return $this->domDocument->saveXML();
     }
-
 
     /**
      * Generate root node.
      *
      * @return DOMElement
      */
-    private function rootElement () : DOMElement
+    private function rootElement() : DOMElement
     {
         return $this->domDocument->createElement('SubmitSMSRequest');
     }
@@ -113,7 +107,7 @@ final class VodafoneXMLRequestBodyBuilder
      * @param DOMElement $rootElement
      * @return void
      */
-    private function setRootElementAttributes ($rootElement) : void
+    private function setRootElementAttributes($rootElement) : void
     {
         $attr_xmlns = new DOMAttr('xmlns:', "http://www.edafa.com/web2sms/sms/model/");
         $attr_xmlns_xsi = new DOMAttr("xmlns:xsi", "http://www.w3.org/2001/XMLSchema-instance");
@@ -126,14 +120,13 @@ final class VodafoneXMLRequestBodyBuilder
         $rootElement->setAttributeNode($attr_xsi_type);
     }
 
-
     /**
      * Generate Account Id element.
      *
      * @param DOMElement $rootElement
      * @return void
      */
-    private function generateAccountIdElement ($rootElement) : void
+    private function generateAccountIdElement($rootElement) : void
     {
         $rootElement->appendChild($this->domDocument->createElement('AccountId', $this->accountId));
     }
@@ -144,7 +137,7 @@ final class VodafoneXMLRequestBodyBuilder
      * @param DOMElement $rootElement
      * @return void
      */
-    private function generatePasswordElement ($rootElement) : void
+    private function generatePasswordElement($rootElement) : void
     {
         $rootElement->appendChild($this->domDocument->createElement('Password', $this->password));
     }
@@ -155,7 +148,7 @@ final class VodafoneXMLRequestBodyBuilder
      * @param DOMElement $rootElement
      * @return void
      */
-    private function generateSecureHashElement ($rootElement) : void
+    private function generateSecureHashElement($rootElement) : void
     {
         $rootElement->appendChild($this->domDocument->createElement('SecureHash', $this->secureHash));
     }
@@ -167,7 +160,7 @@ final class VodafoneXMLRequestBodyBuilder
      * @param $recipient
      * @return void
      */
-    private function generateSMSListElement ($rootElement, $recipient) : void
+    private function generateSMSListElement($rootElement, $recipient) : void
     {
         $sms_list_node = $rootElement->appendChild($this->domDocument->createElement("SMSList"));
         $sms_list_node->appendChild($this->domDocument->createElement("SenderName", $this->senderName));

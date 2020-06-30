@@ -1,5 +1,4 @@
 <?php
-
 namespace RobustTools\SMS;
 
 use Illuminate\Support\ServiceProvider;

@@ -1,8 +1,5 @@
 <?php
-
-
 namespace RobustTools\SMS\Console;
-
 
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\File;
@@ -29,7 +26,7 @@ class GenerateSMSServiceProviderEnvVariablesCommand extends Command
      *
      * @return void
      */
-    public function __construct ()
+    public function __construct()
     {
         parent::__construct();
     }
@@ -39,32 +36,32 @@ class GenerateSMSServiceProviderEnvVariablesCommand extends Command
      *
      * @return mixed
      */
-    public function handle ()
+    public function handle()
     {
         $driver = $this->argument('driver');
 
         if (! array_key_exists($driver, config('resala.map'))) {
             $this->error("provided driver does not exists, you may check available drivers: " . implode(", ", array_keys(config('resala.map'))));
+
             return;
         }
 
         if (File::exists($this->getEnvPath()) && ! $this->variablesAlreadySet()) {
-
             $content = $this->getStubContent();
             File::append($this->getEnvPath(), $content);
             $this->info("environment variables set successfully...");
+
             return;
         }
         $this->warn("check if the .env file exists or vodafone variables might already exists");
     }
-
 
     /**
      * Get laravel env file path.
      *
      * @return string
      */
-    private function getEnvPath ()
+    private function getEnvPath()
     {
         return $this->laravel->basePath() . DIRECTORY_SEPARATOR . '.env';
     }
@@ -72,7 +69,7 @@ class GenerateSMSServiceProviderEnvVariablesCommand extends Command
     /**
      * @return string
      */
-    private function getEnvFileContents ()
+    private function getEnvFileContents()
     {
         return File::get($this->getEnvPath());
     }
@@ -82,19 +79,20 @@ class GenerateSMSServiceProviderEnvVariablesCommand extends Command
      *
      * @return bool
      */
-    private function variablesAlreadySet (): bool
+    private function variablesAlreadySet(): bool
     {
         $variables = explode('=', $this->getStubContent());
         foreach ($variables as $variable) {
             return Str::contains($this->getEnvFileContents(), $variable);
         }
+
         return false;
     }
 
     /**
      * @return string
      */
-    private function getStubContent (): string
+    private function getStubContent(): string
     {
         if ($this->argument('driver') == 'vodafone') {
             return File::get(__DIR__ . "/../../stubs/vodafone.env.stub");

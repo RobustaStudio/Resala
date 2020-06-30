@@ -1,6 +1,4 @@
 <?php
-
-
 namespace RobustTools\SMS\Drivers;
 
 use RobustTools\SMS\Abstracts\Driver;
@@ -30,6 +28,7 @@ final class InfobipDriver extends Driver implements SMSServiceProviderDriverInte
      * @var string
      */
     private $password;
+
     /**
      * @var string
      */
@@ -44,7 +43,7 @@ final class InfobipDriver extends Driver implements SMSServiceProviderDriverInte
      * InfobipDriver constructor.
      * @param array $config
      */
-    public function __construct (array $config)
+    public function __construct(array $config)
     {
         $this->username = $config["username"];
         $this->password = $config["password"];
@@ -56,7 +55,7 @@ final class InfobipDriver extends Driver implements SMSServiceProviderDriverInte
      * @param string|array $recipients
      * @return string|array
      */
-    public function to ($recipients)
+    public function to($recipients)
     {
         return $this->recipients = $recipients;
     }
@@ -65,7 +64,7 @@ final class InfobipDriver extends Driver implements SMSServiceProviderDriverInte
      * @param string $message
      * @return string
      */
-    public function message (string $message): string
+    public function message(string $message): string
     {
         return $this->message = $message;
     }
@@ -75,7 +74,7 @@ final class InfobipDriver extends Driver implements SMSServiceProviderDriverInte
      *
      * @return string
      */
-    public function payload (): string
+    public function payload(): string
     {
         return json_encode([
             "text" => $this->message,
@@ -85,21 +84,11 @@ final class InfobipDriver extends Driver implements SMSServiceProviderDriverInte
     }
 
     /**
-     * Encode authorization credentials using base64.
-     *
-     * @return string
-     */
-    private function authorization ()
-    {
-        return base64_encode($this->username . ':' . $this->password);
-    }
-
-    /**
      * Set Infobip Driver request headers.
      *
      * @return array|string[]
      */
-    public function headers (): array
+    public function headers(): array
     {
         return [
             'Content-Type' => 'application/json',
@@ -112,12 +101,22 @@ final class InfobipDriver extends Driver implements SMSServiceProviderDriverInte
      * @return string
      * @throws UnauthorizedException|InternalServerErrorException
      */
-    public function send (): string
+    public function send(): string
     {
         $response = (new HTTPClient())->post($this->endPoint, $this->headers(), $this->payload());
 
         return ($response->getstatusCode() == 200)
             ? "Message sent successfully"
             : "Message couldn't be sent";
+    }
+
+    /**
+     * Encode authorization credentials using base64.
+     *
+     * @return string
+     */
+    private function authorization()
+    {
+        return base64_encode($this->username . ':' . $this->password);
     }
 }

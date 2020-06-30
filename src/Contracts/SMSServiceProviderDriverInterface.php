@@ -1,8 +1,5 @@
 <?php
-
-
 namespace RobustTools\SMS\Contracts;
-
 
 interface SMSServiceProviderDriverInterface
 {
@@ -13,17 +10,17 @@ interface SMSServiceProviderDriverInterface
      *
      * @return string|array
      */
-    public function to ($recipient);
+    public function to($recipient);
 
     /**
      * @param string $message
      *
      * @return string
      */
-    public function message (string $message): string;
+    public function message(string $message): string;
 
     /**
      * @return string
      */
-    public function send (): string;
+    public function send(): string;
 }
