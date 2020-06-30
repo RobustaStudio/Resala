@@ -25,6 +25,7 @@
         "ext-json": "*"
     },
     "require-dev": {
+        "friendsofphp/php-cs-fixer": "^2.16",
         "orchestra/testbench": "^4.6.0",
         "phpunit/phpunit": "^8.0"
     },
