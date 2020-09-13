@@ -75,6 +75,14 @@ return [
             'password' => env('INFOBIP_PASSWORD'),
             'sender_name' => env('INFOBIP_SENDER_NAME', 'Infobip')
         ],
+
+        'vectory_link' => [
+            'end_point' => env('VECTORY_LINK_END_POINT'),
+            'username' => env('VECTORY_LINK_USERNAME'),
+            'password' => env('VECTORY_LINK_PASSWORD'),
+            'sender_name' => env('VECTORY_LINK_SENDER_NAME', 'Vectory Link'),
+            'lang' => env('VECTORY_LINK_LANG', 'E')
+        ],
     ],
 
     /*
@@ -88,7 +96,8 @@ return [
     'map' => [
         'vodafone' => VodafoneDriver::class,
         'connekio' => ConnekioDriver::class,
-        'infobip' => InfobipDriver::class
+        'infobip' => InfobipDriver::class,
+        'vectory_link' => VectoryLink::class
     ],
 ];
 ```
@@ -107,6 +116,11 @@ This adds connekio environment variables to your .env file.
 php artisan resala:make infobip
 ```
 This adds infobip environment variables to your .env file.
+
+```bash
+php artisan resala:make vectory_link
+```
+This adds vectory link environment variables to your .env file.
 
 ## Usage
 
@@ -127,6 +141,11 @@ SMS::via('connekio')
     ->send();
 
 SMS::via('infobip')
+    ->to('2012xxxxxxxx')
+    ->message("Hello World")
+    ->send();
+
+SMS::via('vectory_link')
     ->to('2012xxxxxxxx')
     ->message("Hello World")
     ->send();
