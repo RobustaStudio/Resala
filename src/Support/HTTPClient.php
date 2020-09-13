@@ -35,19 +35,7 @@ class HTTPClient
             'body' => $payload
         ]);
 
-        if ($response->getstatusCode() == 401) {
-            throw new UnauthorizedException('Unauthorized: Access is denied due to invalid credentials');
-        }
-
-        if ($response->getStatusCode() == 500) {
-            throw new InternalServerErrorException("Internal Server Error");
-        }
-
-        if ($this->isXML($response->getHeader("Content-Type"))) {
-            return $this->parseResponse($response);
-        }
-
-        return $response;
+        return $this->handleResponse($response);
     }
 
 
@@ -66,6 +54,16 @@ class HTTPClient
             'query' => $query
         ]);
 
+        return $this->handleResponse($response);
+    }
+
+    /**
+     * Handle response.
+     * @param ResponseInterface $response
+     * @return ResponseInterface|SimpleXMLElement
+     */
+    private function handleResponse(ResponseInterface $response)
+    {
         if ($response->getstatusCode() == 401) {
             throw new UnauthorizedException('Unauthorized: Access is denied due to invalid credentials');
         }
