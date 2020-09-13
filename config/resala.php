@@ -3,6 +3,7 @@
 use RobustTools\SMS\Drivers\ConnekioDriver;
 use RobustTools\SMS\Drivers\InfobipDriver;
 use RobustTools\SMS\Drivers\VodafoneDriver;
+use RobustTools\SMS\Drivers\VectoryLinkDriver;
 
 return [
 
@@ -46,6 +47,14 @@ return [
             'password' => env('INFOBIP_PASSWORD'),
             'sender_name' => env('INFOBIP_SENDER_NAME', 'Infobip')
         ],
+
+        'vectory_link' => [
+            'end_point' => env('VECTORY_LINK_END_POINT'),
+            'username' => env('VECTORY_LINK_USERNAME'),
+            'password' => env('VECTORY_LINK_PASSWORD'),
+            'sender_name' => env('VECTORY_LINK_SENDER_NAME', 'Vectory Link'),
+            'lang' => env('VECTORY_LINK_LANG', 'E')
+        ],
     ],
 
     /*
@@ -59,6 +68,7 @@ return [
     'map' => [
         'vodafone' => VodafoneDriver::class,
         'connekio' => ConnekioDriver::class,
-        'infobip' => InfobipDriver::class
+        'infobip' => InfobipDriver::class,
+        'vectory_link' => VectoryLinkDriver::class
     ],
 ];
