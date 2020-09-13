@@ -12,6 +12,7 @@
 - Vodafone SMS Gateway
 - Connekio SMS Gateway
 - InfoPib SMS Gateway
+- Vectory Link SMS Gateway
 
 ## Installation
 
