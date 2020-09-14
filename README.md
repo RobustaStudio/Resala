@@ -1,8 +1,6 @@
 # PHP & Laravel SMS Gateway Integration Package
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/robust-tools/resala.svg?style=flat-square)](https://packagist.org/packages/robust-tools/resala)
-[![Build Status](https://img.shields.io/travis/robust-tools/resala/master.svg?style=flat-square)](https://travis-ci.org/robust-tools/resala)
-[![Quality Score](https://img.shields.io/scrutinizer/g/robust-tools/resala.svg?style=flat-square)](https://scrutinizer-ci.com/g/robust-tools/resala)
 [![Total Downloads](https://img.shields.io/packagist/dt/robust-tools/resala.svg?style=flat-square)](https://packagist.org/packages/robust-tools/resala)
 
 **Resala** is a PHP & Laravel Package, (Designed to add support to your laravel or just native php app for sending SMS using local operators in the MENA region Like `Vodafone`, `Infopib`, `Conneckio`).  
