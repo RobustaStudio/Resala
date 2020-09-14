@@ -47,7 +47,7 @@ class HTTPClient
      * @throws InternalServerErrorException
      * @throws UnauthorizedException
      */
-    public function get(string $endpoint, array $headers, array $query)
+    public function get(string $endpoint, ?array $headers = [], ?array $query = [])
     {
         $response = $this->client->request('GET', $endpoint, [
             'headers' => $headers,
@@ -96,6 +96,6 @@ class HTTPClient
      */
     private function isXML($contentType): bool
     {
-        return array_pop($contentType) == "application/xml";
+        return (array_pop($contentType) == "text/xml; charset=utf-8") || (array_pop($contentType) == "application/xml");
     }
 }

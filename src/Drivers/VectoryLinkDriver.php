@@ -7,6 +7,7 @@ use RobustTools\SMS\Contracts\SMSServiceProviderDriverInterface;
 use RobustTools\SMS\Exceptions\InternalServerErrorException;
 use RobustTools\SMS\Exceptions\UnauthorizedException;
 use RobustTools\SMS\Support\HTTPClient;
+use RobustTools\SMS\Support\VectoryLinkResponseHandler;
 
 final class VectoryLinkDriver extends Driver implements SMSServiceProviderDriverInterface
 {
@@ -83,14 +84,26 @@ final class VectoryLinkDriver extends Driver implements SMSServiceProviderDriver
      */
     public function payload(): string
     {
-        return json_encode([
-            "SMSText" => $this->message,
-            "SMSReceiver" => $this->recipient,
-            "SMSSender" => $this->senderName,
-            'SMSLang' => $this->lang,
-            'UserName' => $this->username,
-            'Password' => $this->password
-        ]);
+        return '';
+    }
+
+
+    /**
+     * Build Vectory Link request parameters.
+     *
+     * @return array
+     */
+    private function parameters(): array
+    {
+        return
+            [
+                "SMSText" => $this->message,
+                "SMSReceiver" => $this->recipient,
+                "SMSSender" => $this->senderName,
+                'SMSLang' => $this->lang,
+                'UserName' => $this->username,
+                'Password' => $this->password
+            ];
     }
 
     /**
@@ -101,7 +114,7 @@ final class VectoryLinkDriver extends Driver implements SMSServiceProviderDriver
     public function headers(): array
     {
         return [
-            'Content-Type' => 'text/xml',
+            'Content-Type' => 'text/xml; charset=utf-8',
             'Content-Length' => 0
         ];
     }
@@ -112,10 +125,8 @@ final class VectoryLinkDriver extends Driver implements SMSServiceProviderDriver
      */
     public function send(): string
     {
-        $response = (new HTTPClient())->get($this->endPoint, $this->headers(), json_decode($this->payload(), true));
+        $response = (new HTTPClient())->get($this->endPoint, $this->headers(), $this->parameters());
 
-        return ($response->getstatusCode() == 200)
-            ? "Message sent successfully"
-            : "Message couldn't be sent";
+        return VectoryLinkResponseHandler::respond($response);
     }
 }
