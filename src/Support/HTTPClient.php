@@ -1,4 +1,5 @@
 <?php
+
 namespace RobustTools\SMS\Support;
 
 use GuzzleHttp\Client;
@@ -34,6 +35,35 @@ class HTTPClient
             'body' => $payload
         ]);
 
+        return $this->handleResponse($response);
+    }
+
+
+    /**
+     * @param string $endpoint
+     * @param array $headers
+     * @param array $query
+     * @return ResponseInterface|SimpleXMLElement
+     * @throws InternalServerErrorException
+     * @throws UnauthorizedException
+     */
+    public function get(string $endpoint, ?array $headers = [], ?array $query = [])
+    {
+        $response = $this->client->request('GET', $endpoint, [
+            'headers' => $headers,
+            'query' => $query
+        ]);
+
+        return $this->handleResponse($response);
+    }
+
+    /**
+     * Handle response.
+     * @param ResponseInterface $response
+     * @return ResponseInterface|SimpleXMLElement
+     */
+    private function handleResponse(ResponseInterface $response)
+    {
         if ($response->getstatusCode() == 401) {
             throw new UnauthorizedException('Unauthorized: Access is denied due to invalid credentials');
         }
@@ -66,6 +96,6 @@ class HTTPClient
      */
     private function isXML($contentType): bool
     {
-        return array_pop($contentType) == "application/xml";
+        return (array_pop($contentType) == "text/xml; charset=utf-8") || (array_pop($contentType) == "application/xml");
     }
 }
