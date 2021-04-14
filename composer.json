@@ -17,17 +17,17 @@
         }
     ],
     "require": {
-        "php": "^7.2",
+        "php": "^7.3|^8.0",
         "ext-dom": "*",
+        "ext-json": "*",
         "ext-simplexml": "*",
-        "guzzlehttp/guzzle": "^6.5",
-        "illuminate/support": "^6.18|^7.0",
-        "ext-json": "*"
+        "guzzlehttp/guzzle": "^7.0.1",
+        "illuminate/support": "^6.18|^7.0|^8.0"
     },
     "require-dev": {
-        "friendsofphp/php-cs-fixer": "^2.16",
+        "friendsofphp/php-cs-fixer": "^2.18",
         "orchestra/testbench": "^4.6.0",
-        "phpunit/phpunit": "^8.0"
+        "phpunit/phpunit": "^9.0"
     },
     "autoload": {
         "psr-4": {
