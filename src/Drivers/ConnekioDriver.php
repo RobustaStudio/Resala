@@ -1,4 +1,5 @@
 <?php
+
 namespace RobustTools\SMS\Drivers;
 
 use RobustTools\SMS\Abstracts\Driver;
@@ -135,7 +136,7 @@ final class ConnekioDriver extends Driver implements SMSServiceProviderDriverInt
      */
     private function authorization()
     {
-        return base64_encode($this->username . $this->password . $this->accountId);
+        return base64_encode($this->username . ':' . $this->password . ':' . $this->accountId);
     }
 
     /**
