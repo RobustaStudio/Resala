@@ -3,9 +3,9 @@ namespace RobustTools\Resala\Drivers;
 
 use RobustTools\Resala\Abstracts\Driver;
 use RobustTools\Resala\Contracts\SMSDriverInterface;
-use RobustTools\Resala\Exceptions\InternalServerErrorException;
-use RobustTools\Resala\Exceptions\UnauthorizedException;
-use RobustTools\Resala\Support\HTTPClient;
+use RobustTools\Resala\Contracts\SMSDriverResponseInterface;
+use RobustTools\Resala\Response\InfobipDriverResponse;
+use RobustTools\Resala\Support\HTTP;
 
 final class InfobipDriver extends Driver implements SMSDriverInterface
 {
@@ -14,35 +14,16 @@ final class InfobipDriver extends Driver implements SMSDriverInterface
      */
     private $recipients;
 
-    /**
-     * @var string
-     */
-    private $message;
+    private string $message;
 
-    /**
-     * @var string
-     */
-    private $username;
+    private string $username;
 
-    /**
-     * @var string
-     */
-    private $password;
+    private string $password;
 
-    /**
-     * @var string
-     */
-    private $senderName;
+    private string $senderName;
 
-    /**
-     * @var string
-     */
-    private $endPoint;
+    private string $endPoint;
 
-    /**
-     * InfobipDriver constructor.
-     * @param array $config
-     */
     public function __construct(array $config)
     {
         $this->username = $config["username"];
@@ -60,21 +41,12 @@ final class InfobipDriver extends Driver implements SMSDriverInterface
         return $this->recipients = $recipients;
     }
 
-    /**
-     * @param string $message
-     * @return string
-     */
     public function message(string $message): string
     {
         return $this->message = $message;
     }
 
-    /**
-     * Build Infobip request payload.
-     *
-     * @return string
-     */
-    public function payload(): string
+    protected function payload(): string
     {
         return json_encode([
             "text" => $this->message,
@@ -88,35 +60,19 @@ final class InfobipDriver extends Driver implements SMSDriverInterface
      *
      * @return array|string[]
      */
-    public function headers(): array
+    protected function headers(): array
     {
         return [
             'Content-Type' => 'application/json',
             'Accept' => 'application/json',
-            'Authorization' => 'Basic ' . $this->authorization()
+            'Authorization' => sprintf("Basic %s", base64_encode($this->username . ':' . $this->password))
         ];
     }
 
-    /**
-     * @return string
-     * @throws UnauthorizedException|InternalServerErrorException
-     */
-    public function send(): string
+    public function send(): SMSDriverResponseInterface
     {
-        $response = (new HTTPClient())->post($this->endPoint, $this->headers(), $this->payload());
+        $response = (new HTTP())->post($this->endPoint, $this->headers(), $this->payload());
 
-        return ($response->getstatusCode() == 200)
-            ? "Message sent successfully"
-            : "Message couldn't be sent";
-    }
-
-    /**
-     * Encode authorization credentials using base64.
-     *
-     * @return string
-     */
-    private function authorization()
-    {
-        return base64_encode($this->username . ':' . $this->password);
+        return new InfobipDriverResponse($response);
     }
 }

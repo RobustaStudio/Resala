@@ -2,7 +2,7 @@
 namespace RobustTools\Resala;
 
 use Illuminate\Support\ServiceProvider;
-use RobustTools\Resala\Console\GenerateSMSServiceProviderEnvVariablesCommand;
+use RobustTools\Resala\Console\PublishProviderEnvVariablesCommand;
 use RobustTools\Resala\Support\SMSManager;
 
 class SMSServiceProvider extends ServiceProvider
@@ -17,7 +17,7 @@ class SMSServiceProvider extends ServiceProvider
                 __DIR__ . '/../config/resala.php' => config_path('resala.php'),
             ], 'config');
             $this->commands([
-                GenerateSMSServiceProviderEnvVariablesCommand::class
+                PublishProviderEnvVariablesCommand::class
             ]);
         }
     }

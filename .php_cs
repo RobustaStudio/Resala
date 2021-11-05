@@ -4,7 +4,7 @@ $rules = [
     'align_multiline_comment' => true,
     'array_indentation' => true,
     'array_syntax' => ['syntax' => 'short'],
-    'ordered_imports' => ['sortAlgorithm' => 'alpha'],
+    'ordered_imports' => ['sort_algorithm' => 'alpha'],
     'no_unused_imports' => true,
     'blank_line_after_namespace' => true,
     'blank_line_after_opening_tag' => true,
@@ -24,11 +24,10 @@ $rules = [
     'full_opening_tag' => true,
     'function_declaration' => true,
     'function_typehint_space' => true,
-    'global_namespace_import' => true,
+    'global_namespace_import' => ['import_classes' => true],
     'linebreak_after_opening_tag' => true,
     'lowercase_cast' => true,
     'method_chaining_indentation' => true,
-    'class_attributes_separation' => true,
     'multiline_comment_opening_closing' => true,
     'no_empty_comment' => true,
     'no_closing_tag' => true,
@@ -40,6 +39,7 @@ $rules = [
     'no_useless_return' => true,
     'ordered_class_elements' => true,
     'phpdoc_add_missing_param_annotation' => ['only_untyped' => false],
+    'group_import' => true
 ];
 
 $finder = Symfony\Component\Finder\Finder::create()

@@ -37,15 +37,18 @@ class PublishProviderEnvVariablesCommand extends Command
 
         if (! array_key_exists($driver, config('resala.map'))) {
             $this->error("provided driver does not exists, you may check available drivers: " . implode(", ", array_keys(config('resala.map'))));
+            return;
         }
 
-        if (File::exists($this->getEnvPath()) && ! $this->variablesAlreadySet()) {
+        if (File::exists($this->getEnvPath())) {
             $content = $this->getStubContent();
             File::append($this->getEnvPath(), $content);
             $this->info("environment variables set successfully...");
+            return;
         }
 
-        $this->warn("check if the .env file exists or vodafone variables might already exists");
+        $this->error(".env file does not exist");
+        return;
     }
 
     /**
@@ -58,32 +61,6 @@ class PublishProviderEnvVariablesCommand extends Command
         return $this->laravel->basePath() . DIRECTORY_SEPARATOR . '.env';
     }
 
-    /**
-     * @return string
-     */
-    private function getEnvFileContents()
-    {
-        return File::get($this->getEnvPath());
-    }
-
-    /**
-     * Check if vodafone env variables already set.
-     *
-     * @return bool
-     */
-    private function variablesAlreadySet(): bool
-    {
-        $variables = explode('=', $this->getStubContent());
-        foreach ($variables as $variable) {
-            return Str::contains($this->getEnvFileContents(), $variable);
-        }
-
-        return false;
-    }
-
-    /**
-     * @return string
-     */
     private function getStubContent(): string
     {
         if ($this->argument('driver') == 'vodafone') {
