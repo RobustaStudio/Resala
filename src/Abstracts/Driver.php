@@ -20,7 +20,7 @@ abstract class Driver implements SMSDriverInterface
      * @param string|array $recipients
      * @return bool
      */
-    public function isSendingToMultipleRecipients($recipients): bool
+    public function toMultiple($recipients): bool
     {
         return is_array($recipients);
     }

@@ -5,9 +5,9 @@ use Psr\Http\Message\ResponseInterface;
 
 interface SMSDriverResponseInterface
 {
-    public function __construct (ResponseInterface $response);
+    public function __construct(ResponseInterface $response);
 
-    public function success (): bool;
+    public function success(): bool;
 
-    public function body (): string;
+    public function body(): string;
 }

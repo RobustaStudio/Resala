@@ -42,7 +42,7 @@ final class VectoryLinkDriver extends Driver implements SMSDriverInterface
      */
     public function to($recipients)
     {
-        return $this->recipients = $this->isSendingToMultipleRecipients($recipients)
+        return $this->recipients = $this->toMultiple($recipients)
             ? implode(', ', $recipients)
             : $recipients;
     }

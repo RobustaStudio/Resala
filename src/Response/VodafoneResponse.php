@@ -6,7 +6,7 @@ use Psr\Http\Message\ResponseInterface;
 use RobustTools\Resala\Contracts\SMSDriverResponseInterface;
 use SimpleXMLElement;
 
-final class VodafoneDriverResponse implements SMSDriverResponseInterface
+final class VodafoneResponse implements SMSDriverResponseInterface
 {
     private const SUBMIT_ERR = 'FAILED_TO_SUBMIT';
 

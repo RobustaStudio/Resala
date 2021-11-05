@@ -4,7 +4,7 @@ namespace RobustTools\Resala\Drivers;
 use RobustTools\Resala\Abstracts\Driver;
 use RobustTools\Resala\Contracts\SMSDriverInterface;
 use RobustTools\Resala\Contracts\SMSDriverResponseInterface;
-use RobustTools\Resala\Response\InfobipDriverResponse;
+use RobustTools\Resala\Response\InfobipResponse;
 use RobustTools\Resala\Support\HTTP;
 
 final class InfobipDriver extends Driver implements SMSDriverInterface
@@ -73,6 +73,6 @@ final class InfobipDriver extends Driver implements SMSDriverInterface
     {
         $response = (new HTTP())->post($this->endPoint, $this->headers(), $this->payload());
 
-        return new InfobipDriverResponse($response);
+        return new InfobipResponse($response);
     }
 }

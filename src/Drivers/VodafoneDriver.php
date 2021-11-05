@@ -4,7 +4,7 @@ namespace RobustTools\Resala\Drivers;
 use RobustTools\Resala\Abstracts\Driver;
 use RobustTools\Resala\Contracts\SMSDriverInterface;
 use RobustTools\Resala\Contracts\SMSDriverResponseInterface;
-use RobustTools\Resala\Response\VodafoneDriverResponse;
+use RobustTools\Resala\Response\VodafoneResponse;
 use RobustTools\Resala\Support\HTTP;
 use RobustTools\Resala\Support\VodafoneXMLRequestBodyBuilder;
 
@@ -74,14 +74,14 @@ final class VodafoneDriver extends Driver implements SMSDriverInterface
     {
         $response = HTTP::post($this->endPoint, $this->headers(), $this->payload());
 
-        return new VodafoneDriverResponse($response);
+        return new VodafoneResponse($response);
     }
 
     private function hashableKey(): string
     {
         $hashableKey = sprintf("AccountId=%s&Password=%s", $this->accountId, $this->password);
 
-        if ($this->isSendingToMultipleRecipients($this->recipients)) {
+        if ($this->toMultiple($this->recipients)) {
 
             foreach ($this->recipients as $recipient) {
                 $hashableKey .= sprintf("&SenderName=%s&ReceiverMSISDN=%s&SMSText=%s", $this->senderName, $recipient, $this->message);

@@ -6,7 +6,7 @@ use Psr\Http\Message\ResponseInterface;
 use RobustTools\Resala\Contracts\SMSDriverResponseInterface;
 use SimpleXMLElement;
 
-class VectoryLinkResponse implements SMSDriverResponseInterface
+final class VectoryLinkResponse implements SMSDriverResponseInterface
 {
     private const OK = 0;
 
