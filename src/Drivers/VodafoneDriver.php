@@ -1,54 +1,29 @@
 <?php
-namespace RobustTools\SMS\Drivers;
+namespace RobustTools\Resala\Drivers;
 
-use RobustTools\SMS\Abstracts\Driver;
-use RobustTools\SMS\Contracts\SMSServiceProviderDriverInterface;
-use RobustTools\SMS\Exceptions\InternalServerErrorException;
-use RobustTools\SMS\Exceptions\UnauthorizedException;
-use RobustTools\SMS\Support\HTTPClient;
-use RobustTools\SMS\Support\VodafoneXMLRequestBodyBuilder;
+use RobustTools\Resala\Abstracts\Driver;
+use RobustTools\Resala\Contracts\SMSDriverInterface;
+use RobustTools\Resala\Contracts\SMSDriverResponseInterface;
+use RobustTools\Resala\Response\VodafoneDriverResponse;
+use RobustTools\Resala\Support\VodafoneXMLRequestBodyBuilder;
 
-final class VodafoneDriver extends Driver implements SMSServiceProviderDriverInterface
+final class VodafoneDriver extends Driver implements SMSDriverInterface
 {
-    /**
-     * @var string|array
-     */
+    /** @var string|array */
     private $recipients;
 
-    /**
-     * @var string
-     */
-    private $message;
+    private string $message;
 
-    /**
-     * @var string
-     */
-    private $accountId;
+    private string $accountId;
 
-    /**
-     * @var string
-     */
-    private $password;
+    private string $password;
 
-    /**
-     * @var string
-     */
-    private $senderName;
+    private string $senderName;
 
-    /**
-     * @var string
-     */
-    private $secureHash;
+    private string $secureHash;
 
-    /**
-     * @var string
-     */
-    private $endPoint;
+    private string $endPoint;
 
-    /**
-     * VodafoneDriver constructor.
-     * @param array $config
-     */
     public function __construct(array $config)
     {
         $this->accountId = $config["account_id"];
@@ -67,29 +42,18 @@ final class VodafoneDriver extends Driver implements SMSServiceProviderDriverInt
         return $this->recipients = $recipients;
     }
 
-    /**
-     * @param string $message
-     * @return string
-     */
     public function message(string $message): string
     {
         return $this->message = $message;
     }
 
-    /**
-     * Build Vodafone request payload.
-     *
-     * @return string
-     */
     public function payload(): string
     {
-        $secureHash = strtoupper(hash_hmac('SHA256', $this->hashableKey(), $this->secureHash));
-
         return (new VodafoneXMLRequestBodyBuilder(
             $this->accountId,
             $this->password,
             $this->senderName,
-            $secureHash,
+            strtoupper(hash_hmac('SHA256', $this->hashableKey(), $this->secureHash)),
             $this->recipients,
             $this->message
         ))->build();
@@ -105,32 +69,26 @@ final class VodafoneDriver extends Driver implements SMSServiceProviderDriverInt
         return ['Content-Type' => 'application/xml; charset=UTF8'];
     }
 
-    /**
-     * @return string
-     * @throws UnauthorizedException|InternalServerErrorException
-     */
-    public function send(): string
+    public function send(): SMSDriverResponseInterface
     {
-        $response = (new HTTPClient())->post($this->endPoint, $this->headers(), $this->payload());
+        $response = $this->httpClient()->post($this->endPoint, $this->headers(), $this->payload());
 
-        return $response->Description;
+        return new VodafoneDriverResponse($response);
     }
 
-    /**
-     * @return string
-     */
     private function hashableKey(): string
     {
-        $hashableKey = "AccountId=" . $this->accountId . "&Password=" . $this->password;
+        $hashableKey = sprintf("AccountId=%s&Password=%s", $this->accountId, $this->password);
 
         if ($this->isSendingToMultipleRecipients($this->recipients)) {
+
             foreach ($this->recipients as $recipient) {
-                $hashableKey .= "&SenderName=" . $this->senderName . "&ReceiverMSISDN=" . $recipient . "&SMSText=" . $this->message;
+                $hashableKey .= sprintf("&SenderName=%s&ReceiverMSISDN=%s&SMSText=%s", $this->senderName, $recipient, $this->message);
             }
 
             return $hashableKey;
         } else {
-            return "AccountId=" . $this->accountId . "&Password=" . $this->password . "&SenderName=" . $this->senderName . "&ReceiverMSISDN=" . $this->recipients . "&SMSText=" . $this->message;
+            return sprintf("AccountId=%s&Password=%s&SenderName=%s&ReceiverMSISDN=%s&SMSText=%s", $this->accountId, $this->password, $this->senderName, $this->recipients, $this->message);
         }
     }
 }

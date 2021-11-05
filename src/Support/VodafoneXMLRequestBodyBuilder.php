@@ -1,5 +1,5 @@
 <?php
-namespace RobustTools\SMS\Support;
+namespace RobustTools\Resala\Support;
 
 use DOMAttr;
 use DOMDocument;

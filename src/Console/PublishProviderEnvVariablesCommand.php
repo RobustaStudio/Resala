@@ -1,11 +1,11 @@
 <?php
-namespace RobustTools\SMS\Console;
+namespace RobustTools\Resala\Console;
 
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Str;
 
-class GenerateSMSServiceProviderEnvVariablesCommand extends Command
+class PublishProviderEnvVariablesCommand extends Command
 {
     /**
      * The name and signature of the console command.
@@ -31,28 +31,20 @@ class GenerateSMSServiceProviderEnvVariablesCommand extends Command
         parent::__construct();
     }
 
-    /**
-     * Execute the console command.
-     *
-     * @return mixed
-     */
     public function handle()
     {
         $driver = $this->argument('driver');
 
         if (! array_key_exists($driver, config('resala.map'))) {
             $this->error("provided driver does not exists, you may check available drivers: " . implode(", ", array_keys(config('resala.map'))));
-
-            return;
         }
 
         if (File::exists($this->getEnvPath()) && ! $this->variablesAlreadySet()) {
             $content = $this->getStubContent();
             File::append($this->getEnvPath(), $content);
             $this->info("environment variables set successfully...");
-
-            return;
         }
+
         $this->warn("check if the .env file exists or vodafone variables might already exists");
     }
 

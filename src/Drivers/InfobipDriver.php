@@ -1,13 +1,13 @@
 <?php
-namespace RobustTools\SMS\Drivers;
+namespace RobustTools\Resala\Drivers;
 
-use RobustTools\SMS\Abstracts\Driver;
-use RobustTools\SMS\Contracts\SMSServiceProviderDriverInterface;
-use RobustTools\SMS\Exceptions\InternalServerErrorException;
-use RobustTools\SMS\Exceptions\UnauthorizedException;
-use RobustTools\SMS\Support\HTTPClient;
+use RobustTools\Resala\Abstracts\Driver;
+use RobustTools\Resala\Contracts\SMSDriverInterface;
+use RobustTools\Resala\Exceptions\InternalServerErrorException;
+use RobustTools\Resala\Exceptions\UnauthorizedException;
+use RobustTools\Resala\Support\HTTPClient;
 
-final class InfobipDriver extends Driver implements SMSServiceProviderDriverInterface
+final class InfobipDriver extends Driver implements SMSDriverInterface
 {
     /**
      * @var string|array

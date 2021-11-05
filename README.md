@@ -139,11 +139,11 @@ just replace the `env(values)` with your driver config values.
 ##Usage
 
 ```php
-use RobustTools\SMS\SMSManager;
+use RobustTools\SMS\SMS;
 
 $configFile = __DIR__ . "/config/resala.php";
 
-(new SMSManager($configFile))->to(['010995162378', '012345522'])
+(new SMS($configFile))->to(['010995162378', '012345522'])
          ->message("Hello World")
          ->send();
 ```

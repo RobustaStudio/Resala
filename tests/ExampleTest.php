@@ -1,8 +1,8 @@
 <?php
-namespace RobustTools\SMS\Tests;
+namespace RobustTools\Resala\Tests;
 
 use Orchestra\Testbench\TestCase;
-use RobustTools\SMS\SMSServiceProvider;
+use RobustTools\Resala\SMSServiceProvider;
 
 class ExampleTest extends TestCase
 {

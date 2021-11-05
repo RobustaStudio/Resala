@@ -1,8 +1,9 @@
 <?php
-namespace RobustTools\SMS;
+namespace RobustTools\Resala;
 
 use Illuminate\Support\ServiceProvider;
-use RobustTools\SMS\Console\GenerateSMSServiceProviderEnvVariablesCommand;
+use RobustTools\Resala\Console\GenerateSMSServiceProviderEnvVariablesCommand;
+use RobustTools\Resala\Support\SMSManager;
 
 class SMSServiceProvider extends ServiceProvider
 {
