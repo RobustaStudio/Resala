@@ -5,6 +5,7 @@ use RobustTools\Resala\Abstracts\Driver;
 use RobustTools\Resala\Contracts\SMSDriverInterface;
 use RobustTools\Resala\Contracts\SMSDriverResponseInterface;
 use RobustTools\Resala\Response\VodafoneDriverResponse;
+use RobustTools\Resala\Support\HTTP;
 use RobustTools\Resala\Support\VodafoneXMLRequestBodyBuilder;
 
 final class VodafoneDriver extends Driver implements SMSDriverInterface
@@ -47,7 +48,7 @@ final class VodafoneDriver extends Driver implements SMSDriverInterface
         return $this->message = $message;
     }
 
-    public function payload(): string
+    protected function payload(): string
     {
         return (new VodafoneXMLRequestBodyBuilder(
             $this->accountId,
@@ -64,14 +65,14 @@ final class VodafoneDriver extends Driver implements SMSDriverInterface
      *
      * @return array|string[]
      */
-    public function headers(): array
+    protected function headers(): array
     {
         return ['Content-Type' => 'application/xml; charset=UTF8'];
     }
 
     public function send(): SMSDriverResponseInterface
     {
-        $response = $this->httpClient()->post($this->endPoint, $this->headers(), $this->payload());
+        $response = HTTP::post($this->endPoint, $this->headers(), $this->payload());
 
         return new VodafoneDriverResponse($response);
     }

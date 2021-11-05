@@ -97,5 +97,9 @@ class PublishProviderEnvVariablesCommand extends Command
         if ($this->argument('driver') == "infobip") {
             return File::get(__DIR__ . "/../../stubs/infobip.env.stub");
         }
+
+        if ($this->argument('driver') == "vectory_link") {
+            return File::get(__DIR__ . "/../../stubs/vectory_link.env.stub");
+        }
     }
 }

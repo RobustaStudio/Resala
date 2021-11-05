@@ -2,15 +2,17 @@
 namespace RobustTools\Resala\Abstracts;
 
 use RobustTools\Resala\Contracts\SMSDriverInterface;
-use RobustTools\Resala\Support\HTTPClient;
 
 abstract class Driver implements SMSDriverInterface
 {
     abstract public function __construct(array $config);
 
-    abstract public function payload(): string;
+    /**
+     * @return string|array
+    */
+    abstract protected function payload();
 
-    abstract public function headers(): array;
+    abstract protected function headers(): array;
 
     /**
      * Determine if sending to multiple recipients.
@@ -21,10 +23,5 @@ abstract class Driver implements SMSDriverInterface
     public function isSendingToMultipleRecipients($recipients): bool
     {
         return is_array($recipients);
-    }
-
-    public function httpClient (): HTTPClient
-    {
-        return new HTTPClient();
     }
 }

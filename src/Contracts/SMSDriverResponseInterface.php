@@ -7,11 +7,7 @@ interface SMSDriverResponseInterface
 {
     public function __construct (ResponseInterface $response);
 
-    public function ok (): bool;
-
-    public function serverError (): bool;
-
-    public function clientError (): bool;
+    public function success (): bool;
 
     public function body (): string;
 }

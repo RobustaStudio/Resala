@@ -4,11 +4,24 @@ namespace RobustTools\Resala\Response;
 
 use Psr\Http\Message\ResponseInterface;
 use RobustTools\Resala\Contracts\SMSDriverResponseInterface;
-use RobustTools\Resala\Support\VodafoneResponseStatus;
 use SimpleXMLElement;
 
 final class VodafoneDriverResponse implements SMSDriverResponseInterface
 {
+    private const SUBMIT_ERR = 'FAILED_TO_SUBMIT';
+
+    private const TIME_OUT_ERR = 'TIMMED_OUT';
+
+    private const BAD_REQUEST_ERR = 'INVALID_REQUEST';
+
+    private const SERVER_ERR = 'INTERNAL_SERVER_ERROR';
+
+    private const GENERIC_ERR = 'GENERIC_ERROR';
+
+    private const SUBMITTED = 'SUBMITTED';
+
+    private const OK = 'SUCCESS';
+
     private SimpleXMLElement $response;
 
     private string $resultStatus;
@@ -22,23 +35,14 @@ final class VodafoneDriverResponse implements SMSDriverResponseInterface
         $this->smsStatus = $this->response->SMSStatus;
     }
 
-    public function ok (): bool
-    {
-        return VodafoneResponseStatus::success($this->resultStatus, $this->smsStatus);
-    }
-
-    public function serverError (): bool
-    {
-        return VodafoneResponseStatus::serverErr($this->resultStatus);
-    }
-
-    public function clientError (): bool
-    {
-        return VodafoneResponseStatus::clientErr($this->resultStatus);
-    }
-
     public function body (): string
     {
         return $this->response->Description;
+    }
+
+    public function success (): bool
+    {
+        return $this->resultStatus === self::OK
+            && $this->smsStatus === self::SUBMITTED;
     }
 }

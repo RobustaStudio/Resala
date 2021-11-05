@@ -1,8 +1,6 @@
 # PHP & Laravel SMS Gateway Integration Package
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/robust-tools/resala.svg?style=flat-square)](https://packagist.org/packages/robust-tools/resala)
-[![Build Status](https://img.shields.io/travis/robust-tools/resala/master.svg?style=flat-square)](https://travis-ci.org/robust-tools/resala)
-[![Quality Score](https://img.shields.io/scrutinizer/g/robust-tools/resala.svg?style=flat-square)](https://scrutinizer-ci.com/g/robust-tools/resala)
 [![Total Downloads](https://img.shields.io/packagist/dt/robust-tools/resala.svg?style=flat-square)](https://packagist.org/packages/robust-tools/resala)
 
 **Resala** is a PHP & Laravel Package, (Designed to add support to your laravel or just native php app for sending SMS using local operators in the MENA region Like `Vodafone`, `Infopib`, `Conneckio`).  
@@ -12,6 +10,7 @@
 - Vodafone SMS Gateway
 - Connekio SMS Gateway
 - InfoPib SMS Gateway
+- Vectory Link SMS Gateway
 
 ## Installation
 
@@ -75,6 +74,14 @@ return [
             'password' => env('INFOBIP_PASSWORD'),
             'sender_name' => env('INFOBIP_SENDER_NAME', 'Infobip')
         ],
+
+        'vectory_link' => [
+            'end_point' => env('VECTORY_LINK_END_POINT'),
+            'username' => env('VECTORY_LINK_USERNAME'),
+            'password' => env('VECTORY_LINK_PASSWORD'),
+            'sender_name' => env('VECTORY_LINK_SENDER_NAME', 'Vectory Link'),
+            'lang' => env('VECTORY_LINK_LANG', 'E')
+        ],
     ],
 
     /*
@@ -88,7 +95,8 @@ return [
     'map' => [
         'vodafone' => VodafoneDriver::class,
         'connekio' => ConnekioDriver::class,
-        'infobip' => InfobipDriver::class
+        'infobip' => InfobipDriver::class,
+        'vectory_link' => VectoryLink::class
     ],
 ];
 ```
@@ -107,6 +115,11 @@ This adds connekio environment variables to your .env file.
 php artisan resala:make infobip
 ```
 This adds infobip environment variables to your .env file.
+
+```bash
+php artisan resala:make vectory_link
+```
+This adds vectory link environment variables to your .env file.
 
 ## Usage
 
@@ -127,6 +140,11 @@ SMS::via('connekio')
     ->send();
 
 SMS::via('infobip')
+    ->to('2012xxxxxxxx')
+    ->message("Hello World")
+    ->send();
+
+SMS::via('vectory_link')
     ->to('2012xxxxxxxx')
     ->message("Hello World")
     ->send();
