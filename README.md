@@ -3,7 +3,7 @@
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/robust-tools/resala.svg?style=flat-square)](https://packagist.org/packages/robust-tools/resala)
 [![Total Downloads](https://img.shields.io/packagist/dt/robust-tools/resala.svg?style=flat-square)](https://packagist.org/packages/robust-tools/resala)
 
-**Resala** is a PHP & Laravel Package, (Designed to add support to your laravel or just native php app for sending SMS using local operators in the MENA region Like `Vodafone`, `Infopib`, `Conneckio`, `VectoryLink).  
+**Resala** is a PHP & Laravel Package, (Designed to add support to your laravel or just native php app for sending SMS using local operators in the MENA region Like `Vodafone`, `Infopib`, `Conneckio`, `VectoryLink`).  
 **Resala** not just tied to use inside Laravel you can hook it up in any php code
 
 ## Supported Providers
