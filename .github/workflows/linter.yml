@@ -9,18 +9,18 @@ jobs:
     php-cs-fixer:
         runs-on: ubuntu-latest
         steps:
-            -   name: Checkout code
-                uses: actions/checkout@v2
+            - name: Checkout code
+              uses: actions/checkout@v2
 
             - name: Run php-cs-fixer
               uses: docker://oskarstark/php-cs-fixer-ga
               with:
                    args: --config=.php_cs.dist.php
 
-            -   name: Extract branch name
-                shell: bash
-                run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
-                id: extract_branch
+            - name: Extract branch name
+              shell: bash
+              run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
+              id: extract_branch
 
             - name: Commit changes
             - uses: stefanzweifel/git-auto-commit-action@v4
