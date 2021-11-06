@@ -1,41 +1,28 @@
-name: Formats (PHP)
+name: Format (PHP)
 
-on: ['push', 'pull_request']
+on:
+    pull_request:
+        paths:
+            - '**.php'
 
 jobs:
-    ci:
-        runs-on: ${{ matrix.os }}
-
-        strategy:
-            fail-fast: true
-            matrix:
-                os: [ubuntu-latest]
-                php: [8]
-                dependency-version: [prefer-lowest, prefer-stable]
-
-        name: Formats P${{ matrix.php }} - ${{ matrix.os }} - ${{ matrix.dependency-version }}
-
+    php-cs-fixer:
+        runs-on: ubuntu-latest
         steps:
+            -   name: Checkout code
+                uses: actions/checkout@v2
 
-            - name: Checkout
-              uses: actions/checkout@v2
+            -   name: Fix style
+                uses: docker://oskarstark/php-cs-fixer-ga
+                with:
+                    args: --config=.php_cs.dist.php
 
-            - name: Cache dependencies
-              uses: actions/cache@v1
+            -   name: Extract branch name
+                shell: bash
+                run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
+                id: extract_branch
+
+            - name: Commit changes
+            - uses: stefanzweifel/git-auto-commit-action@v4
               with:
-                  path: ~/.composer/cache/files
-                  key: dependencies-php-${{ matrix.php }}-composer-${{ hashFiles('composer.json') }}
-
-            - name: Setup PHP
-              uses: shivammathur/setup-php@v2
-              with:
-                  php-version: ${{ matrix.php }}
-                  extensions: dom, mbstring, zip
-                  tools: prestissimo
-                  coverage: pcov
-
-            - name: Install Composer dependencies
-              run: composer update --${{ matrix.dependency-version }} --no-interaction --prefer-dist
-
-            - name: Coding Style Checks
-              run: ./vendor/bin/php-cs-fixer fix
+                  commit_message: fix code style

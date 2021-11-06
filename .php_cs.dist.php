@@ -48,7 +48,7 @@ $finder = Symfony\Component\Finder\Finder::create()
     ->name('*.php')
     ->ignoreDotFiles(true)
     ->ignoreVCS(true)
-    ->append(['.php_cs']);
+    ->append(['.php_cs.dist.php']);
 
 return PhpCsFixer\Config::create()
     ->setUsingCache(true)
