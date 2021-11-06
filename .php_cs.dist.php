@@ -44,11 +44,14 @@ $rules = [
 
 $finder = Symfony\Component\Finder\Finder::create()
     ->exclude("vendor")
-    ->in(__DIR__)
+    ->in([
+        __DIR__ . '/src',
+        __DIR__ . '/tests',
+    ])
     ->name('*.php')
+    ->notName('*.blade.php')
     ->ignoreDotFiles(true)
-    ->ignoreVCS(true)
-    ->append(['.php_cs.dist.php']);
+    ->ignoreVCS(true);
 
 return PhpCsFixer\Config::create()
     ->setUsingCache(true)
