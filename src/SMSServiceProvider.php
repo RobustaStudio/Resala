@@ -3,7 +3,6 @@ namespace RobustTools\Resala;
 
 use Illuminate\Support\ServiceProvider;
 use RobustTools\Resala\Console\PublishProviderEnvVariablesCommand;
-use RobustTools\Resala\Support\SMSManager;
 
 class SMSServiceProvider extends ServiceProvider
 {
@@ -31,7 +30,7 @@ class SMSServiceProvider extends ServiceProvider
 
         // Register the main class to use with the facade
         $this->app->singleton('sms', function () {
-            return new SMSManager;
+            return new SMS;
         });
     }
 }

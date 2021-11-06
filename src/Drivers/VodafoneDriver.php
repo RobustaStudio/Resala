@@ -6,7 +6,7 @@ use RobustTools\Resala\Contracts\SMSDriverInterface;
 use RobustTools\Resala\Contracts\SMSDriverResponseInterface;
 use RobustTools\Resala\Response\VodafoneResponse;
 use RobustTools\Resala\Support\HTTP;
-use RobustTools\Resala\Support\VodafoneXMLRequestBodyBuilder;
+use RobustTools\Resala\Support\VodafonePayloadBuilder;
 
 final class VodafoneDriver extends Driver implements SMSDriverInterface
 {
@@ -50,7 +50,7 @@ final class VodafoneDriver extends Driver implements SMSDriverInterface
 
     protected function payload(): string
     {
-        return (new VodafoneXMLRequestBodyBuilder(
+        return (new VodafonePayloadBuilder(
             $this->accountId,
             $this->password,
             $this->senderName,

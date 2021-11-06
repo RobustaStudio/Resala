@@ -5,53 +5,31 @@ use DOMAttr;
 use DOMDocument;
 use DOMElement;
 
-final class VodafoneXMLRequestBodyBuilder
+final class VodafonePayloadBuilder
 {
-    /**
-     * @var DOMDocument
-     */
-    private $domDocument;
+    private DOMDocument $domDocument;
 
-    /**
-     * @var string
-     */
-    private $message;
+    private string $message;
 
-    /**
-     * @var string
-     */
-    private $secureHash;
+    private string $secureHash;
 
-    /**
-     * @var string
-     */
-    private $accountId;
+    private string $accountId;
 
-    /**
-     * @var string
-     */
-    private $senderName;
+    private string $senderName;
 
-    /**
-     * @var string
-     */
-    private $password;
+    private string $password;
 
-    /**
-     * @var array
-     */
+    /** @var string|array */
     private $recipients;
 
-    /**
-     * VodafoneXMLRequestBodyRenderer constructor.
-     * @param string $accountId
-     * @param string $password
-     * @param string $senderName
-     * @param string $secureHash
-     * @param array $recipients
-     * @param string $message
-     */
-    public function __construct(string $accountId, string $password, string $senderName, string $secureHash, $recipients, string $message)
+    public function __construct(
+        string $accountId,
+        string $password,
+        string $senderName,
+        string $secureHash,
+        $recipients,
+        string $message
+    )
     {
         $this->secureHash = $secureHash;
         $this->accountId = $accountId;
@@ -65,12 +43,7 @@ final class VodafoneXMLRequestBodyBuilder
         $this->recipients = $recipients;
     }
 
-    /**
-     * Build request XML Body
-     *
-     * @return string
-     */
-    public function build()
+    public function build(): string
     {
         $root = $this->rootElement();
         $this->setRootElementAttributes($root);
@@ -78,36 +51,21 @@ final class VodafoneXMLRequestBodyBuilder
         $this->generatePasswordElement($root);
         $this->generateSecureHashElement($root);
 
-        if (is_array($this->recipients)) {
-            foreach ($this->recipients as $recipient) {
-                $this->generateSMSListElement($root, $recipient);
-            }
-        } else {
-            $this->generateSMSListElement($root, $this->recipients);
-        }
+        is_array($this->recipients)
+            ? array_map(fn($recipient) => $this->generateSMSListElement($root, $recipient), $this->recipients)
+            : $this->generateSMSListElement($root, $this->recipients);
 
         $this->domDocument->appendChild($root);
 
         return $this->domDocument->saveXML();
     }
 
-    /**
-     * Generate root node.
-     *
-     * @return DOMElement
-     */
     private function rootElement() : DOMElement
     {
         return $this->domDocument->createElement('SubmitSMSRequest');
     }
 
-    /**
-     * Set root node attributes
-     *
-     * @param DOMElement $rootElement
-     * @return void
-     */
-    private function setRootElementAttributes($rootElement) : void
+    private function setRootElementAttributes(DOMElement $rootElement) : void
     {
         $attr_xmlns = new DOMAttr('xmlns:', "http://www.edafa.com/web2sms/sms/model/");
         $attr_xmlns_xsi = new DOMAttr("xmlns:xsi", "http://www.w3.org/2001/XMLSchema-instance");
@@ -120,47 +78,22 @@ final class VodafoneXMLRequestBodyBuilder
         $rootElement->setAttributeNode($attr_xsi_type);
     }
 
-    /**
-     * Generate Account Id element.
-     *
-     * @param DOMElement $rootElement
-     * @return void
-     */
-    private function generateAccountIdElement($rootElement) : void
+    private function generateAccountIdElement(DOMElement $rootElement) : void
     {
         $rootElement->appendChild($this->domDocument->createElement('AccountId', $this->accountId));
     }
 
-    /**
-     * Generate Password element.
-     *
-     * @param DOMElement $rootElement
-     * @return void
-     */
-    private function generatePasswordElement($rootElement) : void
+    private function generatePasswordElement(DOMElement $rootElement) : void
     {
         $rootElement->appendChild($this->domDocument->createElement('Password', $this->password));
     }
 
-    /**
-     * Generate SecureHash element.
-     *
-     * @param DOMElement $rootElement
-     * @return void
-     */
-    private function generateSecureHashElement($rootElement) : void
+    private function generateSecureHashElement(DOMElement $rootElement) : void
     {
         $rootElement->appendChild($this->domDocument->createElement('SecureHash', $this->secureHash));
     }
 
-    /**
-     * Generate SMSList element.
-     *
-     * @param DOMElement $rootElement
-     * @param $recipient
-     * @return void
-     */
-    private function generateSMSListElement($rootElement, $recipient) : void
+    private function generateSMSListElement(DOMElement $rootElement, string $recipient) : void
     {
         $sms_list_node = $rootElement->appendChild($this->domDocument->createElement("SMSList"));
         $sms_list_node->appendChild($this->domDocument->createElement("SenderName", $this->senderName));

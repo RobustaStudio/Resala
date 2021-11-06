@@ -4,10 +4,9 @@ namespace RobustTools\Resala\Contracts;
 interface SMSDriverInterface
 {
     /**
-     * SMSManager recipient could be single recipient (string) or a set of recipients (array).
+     * SMS recipient could be single recipient (string) or a set of recipients (array).
      *
      * @param string|array $recipients
-     *
      * @return string|array
      */
     public function to($recipients);
