@@ -29,8 +29,7 @@ final class VodafonePayloadBuilder
         string $secureHash,
         $recipients,
         string $message
-    )
-    {
+    ) {
         $this->secureHash = $secureHash;
         $this->accountId = $accountId;
         $this->password = $password;
@@ -52,7 +51,7 @@ final class VodafonePayloadBuilder
         $this->generateSecureHashElement($root);
 
         is_array($this->recipients)
-            ? array_map(fn($recipient) => $this->generateSMSListElement($root, $recipient), $this->recipients)
+            ? array_map(fn ($recipient) => $this->generateSMSListElement($root, $recipient), $this->recipients)
             : $this->generateSMSListElement($root, $this->recipients);
 
         $this->domDocument->appendChild($root);

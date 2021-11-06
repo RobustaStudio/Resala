@@ -20,9 +20,11 @@ final class InfobipResponse implements SMSDriverResponseInterface
     {
         if ($this->success()) {
             $message = $this->response['messages'][0];
+
             return $message['status']['name'] . ": " . $message['status']['description'];
         } else {
             $error = $this->response['requestError']['serviceException'];
+
             return $error['messageId'] . ": " . $error['text'];
         }
     }

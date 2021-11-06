@@ -1,10 +1,8 @@
 <?php
-
 namespace RobustTools\Resala\Drivers;
 
 use RobustTools\Resala\Abstracts\Driver;
-use RobustTools\Resala\Contracts\SMSDriverInterface;
-use RobustTools\Resala\Contracts\SMSDriverResponseInterface;
+use RobustTools\Resala\Contracts\{SMSDriverInterface, SMSDriverResponseInterface};
 use RobustTools\Resala\Response\VectoryLinkResponse;
 use RobustTools\Resala\Support\HTTP;
 
@@ -52,6 +50,13 @@ final class VectoryLinkDriver extends Driver implements SMSDriverInterface
         return $this->message = $message;
     }
 
+    public function send(): SMSDriverResponseInterface
+    {
+        $response = HTTP::get($this->endPoint, $this->headers(), $this->payload());
+
+        return new VectoryLinkResponse($response);
+    }
+
     protected function payload(): array
     {
         return
@@ -71,12 +76,5 @@ final class VectoryLinkDriver extends Driver implements SMSDriverInterface
             'Content-Type' => 'text/xml; charset=utf-8',
             'Content-Length' => 0
         ];
-    }
-
-    public function send(): SMSDriverResponseInterface
-    {
-        $response = HTTP::get($this->endPoint, $this->headers(), $this->payload());
-
-        return new VectoryLinkResponse($response);
     }
 }
