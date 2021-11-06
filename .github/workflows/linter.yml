@@ -1,9 +1,6 @@
-name: Format (PHP)
+name: Check & fix PHP styling
 
-on:
-    pull_request:
-        paths:
-            - '**.php'
+on: [push]
 
 jobs:
     php-cs-fixer:
