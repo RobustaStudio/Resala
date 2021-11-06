@@ -1,9 +1,9 @@
 <?php
 
-use RobustTools\SMS\Drivers\ConnekioDriver;
-use RobustTools\SMS\Drivers\InfobipDriver;
-use RobustTools\SMS\Drivers\VodafoneDriver;
-use RobustTools\SMS\Drivers\VectoryLinkDriver;
+use RobustTools\Resala\Drivers\ConnekioDriver;
+use RobustTools\Resala\Drivers\InfobipDriver;
+use RobustTools\Resala\Drivers\VodafoneDriver;
+use RobustTools\Resala\Drivers\VectoryLinkDriver;
 
 return [
 

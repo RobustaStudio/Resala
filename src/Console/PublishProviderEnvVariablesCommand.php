@@ -1,11 +1,10 @@
 <?php
-namespace RobustTools\SMS\Console;
+namespace RobustTools\Resala\Console;
 
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\File;
-use Illuminate\Support\Str;
 
-class GenerateSMSServiceProviderEnvVariablesCommand extends Command
+class PublishProviderEnvVariablesCommand extends Command
 {
     /**
      * The name and signature of the console command.
@@ -31,11 +30,6 @@ class GenerateSMSServiceProviderEnvVariablesCommand extends Command
         parent::__construct();
     }
 
-    /**
-     * Execute the console command.
-     *
-     * @return mixed
-     */
     public function handle()
     {
         $driver = $this->argument('driver');
@@ -46,14 +40,16 @@ class GenerateSMSServiceProviderEnvVariablesCommand extends Command
             return;
         }
 
-        if (File::exists($this->getEnvPath()) && ! $this->variablesAlreadySet()) {
+        if (File::exists($this->getEnvPath())) {
             $content = $this->getStubContent();
             File::append($this->getEnvPath(), $content);
             $this->info("environment variables set successfully...");
 
             return;
         }
-        $this->warn("check if the .env file exists or vodafone variables might already exists");
+
+        $this->error(".env file does not exist");
+        
     }
 
     /**
@@ -66,32 +62,6 @@ class GenerateSMSServiceProviderEnvVariablesCommand extends Command
         return $this->laravel->basePath() . DIRECTORY_SEPARATOR . '.env';
     }
 
-    /**
-     * @return string
-     */
-    private function getEnvFileContents()
-    {
-        return File::get($this->getEnvPath());
-    }
-
-    /**
-     * Check if vodafone env variables already set.
-     *
-     * @return bool
-     */
-    private function variablesAlreadySet(): bool
-    {
-        $variables = explode('=', $this->getStubContent());
-        foreach ($variables as $variable) {
-            return Str::contains($this->getEnvFileContents(), $variable);
-        }
-
-        return false;
-    }
-
-    /**
-     * @return string
-     */
     private function getStubContent(): string
     {
         if ($this->argument('driver') == 'vodafone') {

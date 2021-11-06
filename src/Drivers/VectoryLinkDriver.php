@@ -1,55 +1,30 @@
 <?php
+namespace RobustTools\Resala\Drivers;
 
-namespace RobustTools\SMS\Drivers;
+use RobustTools\Resala\Abstracts\Driver;
+use RobustTools\Resala\Contracts\{SMSDriverInterface, SMSDriverResponseInterface};
+use RobustTools\Resala\Response\VectoryLinkResponse;
+use RobustTools\Resala\Support\HTTP;
 
-use RobustTools\SMS\Abstracts\Driver;
-use RobustTools\SMS\Contracts\SMSServiceProviderDriverInterface;
-use RobustTools\SMS\Exceptions\InternalServerErrorException;
-use RobustTools\SMS\Exceptions\UnauthorizedException;
-use RobustTools\SMS\Support\HTTPClient;
-use RobustTools\SMS\Support\VectoryLinkResponseHandler;
-
-final class VectoryLinkDriver extends Driver implements SMSServiceProviderDriverInterface
+final class VectoryLinkDriver extends Driver implements SMSDriverInterface
 {
     /**
      * @var string|array
      */
-    private $recipient;
+    private $recipients;
 
-    /**
-     * @var string
-     */
-    private $message;
+    private string $message;
 
-    /**
-     * @var string
-     */
-    private $username;
+    private string $username;
 
-    /**
-     * @var string
-     */
-    private $password;
+    private string $password;
 
-    /**
-     * @var string
-     */
-    private $senderName;
+    private string $senderName;
 
-    /**
-     * @var string
-     */
-    private $endPoint;
+    private string $endPoint;
 
-    /**
-     * @var string
-     */
-    private $lang;
+    private string $lang;
 
-    /**
-     * VectoryLinkDriver constructor.
-     * @param array $config
-     */
     public function __construct(array $config)
     {
         $this->username = $config["username"];
@@ -60,45 +35,34 @@ final class VectoryLinkDriver extends Driver implements SMSServiceProviderDriver
     }
 
     /**
-     * @param string|array $recipient
+     * @param string|array $recipients
      * @return string|array
      */
-    public function to($recipient)
+    public function to($recipients)
     {
-        return $this->recipient = $recipient;
+        return $this->recipients = $this->toMultiple($recipients)
+            ? implode(', ', $recipients)
+            : $recipients;
     }
 
-    /**
-     * @param string $message
-     * @return string
-     */
     public function message(string $message): string
     {
         return $this->message = $message;
     }
 
-    /**
-     * Build Infobip request payload.
-     *
-     * @return string
-     */
-    public function payload(): string
+    public function send(): SMSDriverResponseInterface
     {
-        return '';
+        $response = HTTP::get($this->endPoint, $this->headers(), $this->payload());
+
+        return new VectoryLinkResponse($response);
     }
 
-
-    /**
-     * Build Vectory Link request parameters.
-     *
-     * @return array
-     */
-    private function parameters(): array
+    protected function payload(): array
     {
         return
             [
                 "SMSText" => $this->message,
-                "SMSReceiver" => $this->recipient,
+                "SMSReceiver" => $this->recipients,
                 "SMSSender" => $this->senderName,
                 'SMSLang' => $this->lang,
                 'UserName' => $this->username,
@@ -106,27 +70,11 @@ final class VectoryLinkDriver extends Driver implements SMSServiceProviderDriver
             ];
     }
 
-    /**
-     * Set Infobip Driver request headers.
-     *
-     * @return array|string[]
-     */
-    public function headers(): array
+    protected function headers(): array
     {
         return [
             'Content-Type' => 'text/xml; charset=utf-8',
             'Content-Length' => 0
         ];
-    }
-
-    /**
-     * @return string
-     * @throws UnauthorizedException|InternalServerErrorException
-     */
-    public function send(): string
-    {
-        $response = (new HTTPClient())->get($this->endPoint, $this->headers(), $this->parameters());
-
-        return VectoryLinkResponseHandler::respond($response);
     }
 }
