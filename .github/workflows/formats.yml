@@ -1,6 +1,6 @@
-name: Check & fix PHP styling
+name: Formats (PHP)
 
-on: [push]
+on: ['push', 'pull_request']
 
 jobs:
     php-cs-fixer:
