@@ -27,6 +27,8 @@ jobs:
 
       - name: Run php-cs-fixer
         uses: docker://oskarstark/php-cs-fixer-ga
+        with:
+            args: --config=.php_cs.dist.php
 
       - name: Extract branch name
         shell: bash
