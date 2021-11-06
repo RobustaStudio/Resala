@@ -163,11 +163,9 @@ SMS::via('vectory_link')
     ->send();
 ```
 
-#Outside Laravel
-You need to add a config file named `resala.php` in your project directory the contents of the config file must match the schema of the package config file you can find it [HERE](https://github.com/RobustaStudio/Resala/blob/master/config/resala.php). 
+## Outside Laravel
+You need to add a config file named `resala.php` in your project directory the contents of the config file must match the schema of the package config file you can find it [HERE](https://github.com/RobustaStudio/Resala/blob/master/config/resala.php).    
 just replace the `env(values)` with your driver config values.  
-
-##Usage
 
 ```php
 use RobustTools\Resala\SMS;
