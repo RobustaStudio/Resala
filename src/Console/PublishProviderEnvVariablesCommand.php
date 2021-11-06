@@ -3,7 +3,6 @@ namespace RobustTools\Resala\Console;
 
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\File;
-use Illuminate\Support\Str;
 
 class PublishProviderEnvVariablesCommand extends Command
 {
@@ -37,6 +36,7 @@ class PublishProviderEnvVariablesCommand extends Command
 
         if (! array_key_exists($driver, config('resala.map'))) {
             $this->error("provided driver does not exists, you may check available drivers: " . implode(", ", array_keys(config('resala.map'))));
+
             return;
         }
 
@@ -44,11 +44,12 @@ class PublishProviderEnvVariablesCommand extends Command
             $content = $this->getStubContent();
             File::append($this->getEnvPath(), $content);
             $this->info("environment variables set successfully...");
+
             return;
         }
 
         $this->error(".env file does not exist");
-        return;
+        
     }
 
     /**

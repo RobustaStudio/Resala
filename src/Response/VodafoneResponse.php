@@ -1,5 +1,4 @@
 <?php
-
 namespace RobustTools\Resala\Response;
 
 use Psr\Http\Message\ResponseInterface;
@@ -28,19 +27,19 @@ final class VodafoneResponse implements SMSDriverResponseInterface
 
     private string $smsStatus;
 
-    public function __construct (ResponseInterface $response)
+    public function __construct(ResponseInterface $response)
     {
         $this->response = new SimpleXMLElement($response->getBody());
         $this->resultStatus = $this->response->ResultStatus;
         $this->smsStatus = $this->response->SMSStatus;
     }
 
-    public function body (): string
+    public function body(): string
     {
         return $this->response->Description;
     }
 
-    public function success (): bool
+    public function success(): bool
     {
         return $this->resultStatus === self::OK
             && $this->smsStatus === self::SUBMITTED;

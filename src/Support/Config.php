@@ -5,7 +5,6 @@ use InvalidArgumentException;
 
 final class Config
 {
-
     const CONFIG_FILE_NAME = "resala";
 
     private ConfigRepository $config;

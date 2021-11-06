@@ -2,8 +2,7 @@
 namespace RobustTools\Resala\Drivers;
 
 use RobustTools\Resala\Abstracts\Driver;
-use RobustTools\Resala\Contracts\SMSDriverInterface;
-use RobustTools\Resala\Contracts\SMSDriverResponseInterface;
+use RobustTools\Resala\Contracts\{SMSDriverInterface, SMSDriverResponseInterface};
 use RobustTools\Resala\Response\InfobipResponse;
 use RobustTools\Resala\Support\HTTP;
 
@@ -46,6 +45,13 @@ final class InfobipDriver extends Driver implements SMSDriverInterface
         return $this->message = $message;
     }
 
+    public function send(): SMSDriverResponseInterface
+    {
+        $response = (new HTTP())->post($this->endPoint, $this->headers(), $this->payload());
+
+        return new InfobipResponse($response);
+    }
+
     protected function payload(): string
     {
         return json_encode([
@@ -67,12 +73,5 @@ final class InfobipDriver extends Driver implements SMSDriverInterface
             'Accept' => 'application/json',
             'Authorization' => sprintf("Basic %s", base64_encode($this->username . ':' . $this->password))
         ];
-    }
-
-    public function send(): SMSDriverResponseInterface
-    {
-        $response = (new HTTP())->post($this->endPoint, $this->headers(), $this->payload());
-
-        return new InfobipResponse($response);
     }
 }

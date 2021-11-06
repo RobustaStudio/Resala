@@ -1,12 +1,13 @@
 <?php
 namespace RobustTools\Resala\Factories;
-use RobustTools\Resala\Support\Config;
 
 use RobustTools\Resala\Contracts\SMSDriverInterface;
 
+use RobustTools\Resala\Support\Config;
+
 final class SMSDriverFactory
 {
-    public static function create (?string $driver = null, ?string $filepath = null): SMSDriverInterface
+    public static function create(?string $driver = null, ?string $filepath = null): SMSDriverInterface
     {
         $config = new Config($filepath);
         $drivers = $config->get('map');

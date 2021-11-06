@@ -8,13 +8,6 @@ abstract class Driver implements SMSDriverInterface
     abstract public function __construct(array $config);
 
     /**
-     * @return string|array
-    */
-    abstract protected function payload();
-
-    abstract protected function headers(): array;
-
-    /**
      * Determine if sending to multiple recipients.
      *
      * @param string|array $recipients
@@ -24,4 +17,11 @@ abstract class Driver implements SMSDriverInterface
     {
         return is_array($recipients);
     }
+
+    /**
+     * @return string|array
+     */
+    abstract protected function payload();
+
+    abstract protected function headers(): array;
 }

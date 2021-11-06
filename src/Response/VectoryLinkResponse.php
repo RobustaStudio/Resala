@@ -1,5 +1,4 @@
 <?php
-
 namespace RobustTools\Resala\Response;
 
 use Psr\Http\Message\ResponseInterface;
@@ -30,19 +29,19 @@ final class VectoryLinkResponse implements SMSDriverResponseInterface
 
     private int $status;
 
-    public function __construct (ResponseInterface $response)
+    public function __construct(ResponseInterface $response)
     {
         $this->response = new SimpleXMLElement($response->getBody());
         $this->status = (int) current($this->response);
     }
 
-    public function success (): bool
+    public function success(): bool
     {
         return $this->status === self::OK
             || $this->status === self::OK_QUEUED;
     }
 
-    public function body (): string
+    public function body(): string
     {
         return [
             self::OK => 'Message Sent Successfully',
