@@ -1,54 +1,29 @@
 <?php
+namespace RobustTools\Resala\Drivers;
 
-namespace RobustTools\SMS\Drivers;
+use RobustTools\Resala\Abstracts\Driver;
+use RobustTools\Resala\Contracts\{SMSDriverInterface, SMSDriverResponseInterface};
+use RobustTools\Resala\Response\ConnekioResponse;
+use RobustTools\Resala\Support\HTTP;
 
-use RobustTools\SMS\Abstracts\Driver;
-use RobustTools\SMS\Contracts\SMSServiceProviderDriverInterface;
-use RobustTools\SMS\Exceptions\InternalServerErrorException;
-use RobustTools\SMS\Exceptions\UnauthorizedException;
-use RobustTools\SMS\Support\HTTPClient;
-
-final class ConnekioDriver extends Driver implements SMSServiceProviderDriverInterface
+final class ConnekioDriver extends Driver implements SMSDriverInterface
 {
-    /**
-     * @var string
-     */
-    private $accountId;
+    private string $accountId;
 
-    /**
-     * @var string
-     */
-    private $username;
+    private string $username;
 
-    /**
-     * @var string
-     */
-    private $password;
+    private string $password;
 
-    /**
-     * @var string
-     */
-    private $message;
+    private string $message;
 
-    /**
-     * @var string|array
-     */
+    /** @var string|array */
     private $recipients;
 
-    /**
-     * @var string
-     */
-    private $senderName;
+    private string $senderName;
 
-    /**
-     * @var string
-     */
-    private $singleSmsEndPoint;
+    private string $singleSmsEndPoint;
 
-    /**
-     * @var string
-     */
-    private $batchSmsEndPoint;
+    private string $batchSmsEndPoint;
 
     public function __construct(array $config)
     {
@@ -74,79 +49,40 @@ final class ConnekioDriver extends Driver implements SMSServiceProviderDriverInt
         return $this->message = $message;
     }
 
-    /**
-     * Build connekio request payload.
-     *
-     * @return string
-     */
-    public function payload(): string
+    public function send(): SMSDriverResponseInterface
     {
-        if (!$this->isSendingToMultipleRecipients($this->recipients)) {
-            json_encode([
-                "account_id" => $this->accountId,
-                "text" => $this->message,
-                "msisdn" => $this->recipients,
-                "sender" => $this->senderName
-            ]);
-        }
+        $response = HTTP::post($this->endpoint(), $this->headers(), $this->payload());
 
-        foreach ($this->recipients as $recipient) {
-            $mobileList[]['msisdn'] = $recipient;
-        }
-
-        return json_encode([
-            "account_id" => $this->accountId,
-            "text" => $this->message,
-            "sender" => $this->senderName,
-            "mobile_list" => $mobileList,
-        ]);
+        return new ConnekioResponse($response);
     }
 
-    /**
-     * Set connekio request headers.
-     *
-     * @return array|string[]
-     */
-    public function headers(): array
+    protected function payload(): string
+    {
+        $payload = [
+            "account_id" => $this->accountId,
+            "text" => $this->message,
+            "sender" => $this->senderName
+        ];
+
+        $this->toMultiple($this->recipients)
+            ? $payload['mobile_list'] = array_map(fn ($recipient) => ['msisdn' => $recipient], $this->recipients)
+            : $payload["msisdn"] = $this->recipients;
+
+        return json_encode($payload);
+    }
+
+    protected function headers(): array
     {
         return [
             'Content-Type' => 'application/json',
             'Accept' => 'application/json',
-            'Authorization' => 'Basic ' . $this->authorization()
+            'Authorization' => sprintf("Basic %s", base64_encode($this->username . ':' . $this->password . ':' . $this->accountId))
         ];
     }
 
-    /**
-     * @return string
-     * @throws UnauthorizedException|InternalServerErrorException
-     */
-    public function send(): string
-    {
-        $response = (new HTTPClient())->post($this->endpoint(), $this->headers(), $this->payload());
-
-        return ($response->getstatusCode() == 200)
-            ? "Message sent successfully"
-            : "Message couldn't be sent";
-    }
-
-    /**
-     * Encode authorization credentials using base64.
-     *
-     * @return string
-     */
-    private function authorization()
-    {
-        return base64_encode($this->username . ':' . $this->password . ':' . $this->accountId);
-    }
-
-    /**
-     * Specify request endpoint based on is it sing or batch.
-     *
-     * @return string
-     */
     private function endpoint(): string
     {
-        return $this->isSendingToMultipleRecipients($this->recipients)
+        return $this->toMultiple($this->recipients)
             ? $this->batchSmsEndPoint
             : $this->singleSmsEndPoint;
     }

@@ -1,15 +1,19 @@
 <?php
-namespace RobustTools\SMS\Facades;
+namespace RobustTools\Resala\Facades;
 
 use Illuminate\Support\Facades\Facade;
+use RobustTools\Resala\Contracts\SMSDriverResponseInterface;
 
+/**
+ * Class SMS
+ * @method static self via(string $provider)
+ * @method static self to($recipients)
+ * @method static self message(string $message)
+ * @method static SMSDriverResponseInterface send()
+ * @see \RobustTools\Resala\SMS
+ */
 class SMS extends Facade
 {
-    /**
-     * Get the registered name of the component.
-     *
-     * @return string
-     */
     protected static function getFacadeAccessor()
     {
         return 'sms';
