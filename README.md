@@ -3,7 +3,7 @@
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/robust-tools/resala.svg?style=flat-square)](https://packagist.org/packages/robust-tools/resala)
 [![Total Downloads](https://img.shields.io/packagist/dt/robust-tools/resala.svg?style=flat-square)](https://packagist.org/packages/robust-tools/resala)
 
-**Resala** is a PHP & Laravel Package, (Designed to add support to your laravel or just native php app for sending SMS using local operators in the MENA region Like `Vodafone`, `Infopib`, `Conneckio`).  
+**Resala** is a PHP & Laravel Package, (Designed to add support to your laravel or just native php app for sending SMS using local operators in the MENA region Like `Vodafone`, `Infopib`, `Conneckio`, `VectoryLink).  
 **Resala** not just tied to use inside Laravel you can hook it up in any php code
 
 ## Supported Providers
@@ -26,7 +26,7 @@ composer require robust-tools/resala
 publish the config file with:
 
 ```bash
-php artisan vendor:publish --provider="RobustTools\SMS\SMSServiceProvider" --tag="config"
+php artisan vendor:publish --provider="RobustTools\Resala\SMSServiceProvider" --tag="config"
 ```
 
 This is the contents of the published config file:
@@ -100,26 +100,27 @@ return [
     ],
 ];
 ```
+## Available Commands:
 
+This adds `vodafone` environment variables to your .env file.
 ```bash
 php artisan resala:make vodafone
 ```
-This adds vodafone environment variables to your .env file.
- 
+
+This adds `connekio` environment variables to your .env file.
 ```bash
 php artisan resala:make connekio
 ```
-This adds connekio environment variables to your .env file.
 
+This adds `infobip` environment variables to your .env file.
 ```bash
 php artisan resala:make infobip
 ```
-This adds infobip environment variables to your .env file.
 
+This adds `vectory_link` environment variables to your .env file.
 ```bash
 php artisan resala:make vectory_link
 ```
-This adds vectory link environment variables to your .env file.
 
 ## Usage
 
@@ -132,6 +133,18 @@ SMS::to(['010xxxxxxxx', '011xxxxxxxx'])
     ->message("Hello World")
     ->send();
 ```
+
+You can inspect the returned response from your sms provider through:
+
+```php
+$response = SMS::to(['010xxxxxxxx', '011xxxxxxxx'])
+    ->message("Hello World")
+    ->send();
+
+$response->success() // returns bool true on success, false on failure.
+$response->body() // returns the returned string response body from the sms provider.
+```
+
 you can optionally change the driver using the `via` method
 ```php
 SMS::via('connekio')
@@ -157,7 +170,7 @@ just replace the `env(values)` with your driver config values.
 ##Usage
 
 ```php
-use RobustTools\SMS\SMS;
+use RobustTools\Resala\SMS;
 
 $configFile = __DIR__ . "/config/resala.php";
 
@@ -166,12 +179,7 @@ $configFile = __DIR__ . "/config/resala.php";
          ->send();
 ```
 
-IF no configuration file is being passed a `ConfigFileNotFoundException` will be thrown.
-
-### Changelog
-
- 
-Please see [CHANGELOG](CHANGELOG.md) for more information what has changed recently.
+IF no configuration file is being passed a `InvalidArgumentException` will be thrown.
 
 ## Contributing
 
