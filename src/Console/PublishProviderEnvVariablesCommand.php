@@ -49,7 +49,6 @@ class PublishProviderEnvVariablesCommand extends Command
         }
 
         $this->error(".env file does not exist");
-        
     }
 
     /**
