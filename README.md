@@ -147,18 +147,8 @@ $response->body() // returns the returned string response body from the sms prov
 
 you can optionally change the driver using the `via` method
 ```php
-SMS::via('connekio')
+SMS::via('vodafone')
     ->to('010xxxxxxxx')
-    ->message("Hello World")
-    ->send();
-
-SMS::via('infobip')
-    ->to('2012xxxxxxxx')
-    ->message("Hello World")
-    ->send();
-
-SMS::via('vectory_link')
-    ->to('2012xxxxxxxx')
     ->message("Hello World")
     ->send();
 ```
@@ -172,7 +162,7 @@ use RobustTools\Resala\SMS;
 
 $configFile = __DIR__ . "/config/resala.php";
 
-(new SMS($configFile))->to(['010995162378', '012345522'])
+(new SMS($driver, $configFile))->to(['010995162378', '012345522'])
          ->message("Hello World")
          ->send();
 ```
