@@ -141,8 +141,8 @@ $response = SMS::to(['010xxxxxxxx', '011xxxxxxxx'])
     ->message("Hello World")
     ->send();
 
-$response->success() // returns bool true on success, false on failure.
-$response->body() // returns the returned string response body from the sms provider.
+$response->success(); // returns bool
+$response->body(); // returns string
 ```
 
 you can optionally change the driver using the `via` method
