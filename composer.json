@@ -22,7 +22,7 @@
         "ext-json": "*",
         "ext-simplexml": "*",
         "guzzlehttp/guzzle": "^7.4",
-        "illuminate/support": "^6.0|^7.0|^8.0"
+        "illuminate/support": "^6.0|^7.0|^8.0|^9.0"
     },
     "require-dev": {
         "orchestra/testbench": "^4.6.0",
