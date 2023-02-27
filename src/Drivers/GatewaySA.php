@@ -1,10 +1,8 @@
 <?php
-
 namespace RobustTools\Resala\Drivers;
 
 use RobustTools\Resala\Abstracts\Driver;
-use RobustTools\Resala\Contracts\SMSDriverInterface;
-use RobustTools\Resala\Contracts\SMSDriverResponseInterface;
+use RobustTools\Resala\Contracts\{SMSDriverInterface, SMSDriverResponseInterface};
 use RobustTools\Resala\Response\GatewaySAResponse;
 use RobustTools\Resala\Support\HTTP;
 
@@ -19,27 +17,6 @@ class GatewaySA extends Driver implements SMSDriverInterface
     public function __construct(private array $config)
     {
         $this->endPoint = $config['endpoint'];
-    }
-
-    /**
-     * @return array
-     */
-    protected function payload (): array
-    {
-        return [
-            'api_id' => $this->config['api_id'],
-            'api_password' => $this->config['api_password'],
-            'sender_id' => $this->config['sender_id'],
-            'sms_type' => $this->config['sms_type'],
-            'encoding' => $this->config['encoding'],
-            'phonenumber' => $this->recipients,
-            'textmessage' => $this->message,
-        ];
-    }
-
-    protected function headers (): array
-    {
-        return ['Accept' => 'application/json'];
     }
 
     /**
@@ -63,10 +40,31 @@ class GatewaySA extends Driver implements SMSDriverInterface
     /**
      * @return SMSDriverResponseInterface
      */
-    public function send (): SMSDriverResponseInterface
+    public function send(): SMSDriverResponseInterface
     {
         $response = (new HTTP())->get($this->endPoint, $this->headers(), $this->payload());
 
         return new GatewaySAResponse($response);
+    }
+
+    /**
+     * @return array
+     */
+    protected function payload(): array
+    {
+        return [
+            'api_id' => $this->config['api_id'],
+            'api_password' => $this->config['api_password'],
+            'sender_id' => $this->config['sender_id'],
+            'sms_type' => $this->config['sms_type'],
+            'encoding' => $this->config['encoding'],
+            'phonenumber' => $this->recipients,
+            'textmessage' => $this->message,
+        ];
+    }
+
+    protected function headers(): array
+    {
+        return ['Accept' => 'application/json'];
     }
 }
