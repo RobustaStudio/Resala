@@ -1,6 +1,7 @@
 <?php
 
 use RobustTools\Resala\Drivers\ConnekioDriver;
+use RobustTools\Resala\Drivers\GatewaySA;
 use RobustTools\Resala\Drivers\InfobipDriver;
 use RobustTools\Resala\Drivers\VodafoneDriver;
 use RobustTools\Resala\Drivers\VectoryLinkDriver;
@@ -55,6 +56,15 @@ return [
             'sender_name' => env('VECTORY_LINK_SENDER_NAME', 'Vectory Link'),
             'lang' => env('VECTORY_LINK_LANG', 'E')
         ],
+
+        'gateway_sa' => [
+            'end_point' => env('GATEWAYSA_END_POINT', 'http://REST.GATEWAY.SA/api/SendSMS'),
+            'api_id' => env('GATEWAYSA_API_ID'),
+            'api_password' => env('GATEWAYSA_API_PASSWORD'),
+            'sms_type' => env('GATEWAYSA_SMS_TYPE', 'T'),
+            'encoding' => env('GATEWAYSA_ENCODING', 'T'),
+            'sender_id' => env('GATEWAYSA_SENDER_ID'),
+        ],
     ],
 
     /*
@@ -69,6 +79,7 @@ return [
         'vodafone' => VodafoneDriver::class,
         'connekio' => ConnekioDriver::class,
         'infobip' => InfobipDriver::class,
-        'vectory_link' => VectoryLinkDriver::class
+        'vectory_link' => VectoryLinkDriver::class,
+        'gateway_sa' => GatewaySA::class
     ],
 ];
