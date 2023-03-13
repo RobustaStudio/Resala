@@ -105,3 +105,4 @@ modules.xml
 .DS_Store
 src/.DS_Store
 .editorconfig
+.phpunit.result.cache
