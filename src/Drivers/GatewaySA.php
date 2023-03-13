@@ -55,11 +55,12 @@ class GatewaySA extends Driver implements SMSDriverInterface
         return [
             'api_id' => $this->config['api_id'],
             'api_password' => $this->config['api_password'],
-            'sender_id' => $this->config['sender_id'],
             'sms_type' => $this->config['sms_type'],
             'encoding' => $this->config['encoding'],
+            'sender_id' => $this->config['sender_id'],
+            'templateid' => $this->config['templateid'],
             'phonenumber' => $this->recipients,
-            'textmessage' => $this->message,
+            'v1' => $this->message,
         ];
     }
 

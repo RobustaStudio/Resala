@@ -64,6 +64,7 @@ return [
             'sms_type' => env('GATEWAYSA_SMS_TYPE', 'T'),
             'encoding' => env('GATEWAYSA_ENCODING', 'T'),
             'sender_id' => env('GATEWAYSA_SENDER_ID'),
+            'templateid' => env('GATEWAYSA_TEMPLATE_ID'),
         ],
     ],
 
