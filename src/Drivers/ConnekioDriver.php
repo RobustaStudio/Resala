@@ -65,8 +65,8 @@ final class ConnekioDriver extends Driver implements SMSDriverInterface
         ];
 
         $this->toMultiple($this->recipients)
-            ? $payload['mobile_list'] = array_map(fn ($recipient) => ['msisdn' => $recipient], $this->recipients)
-            : $payload["msisdn"] = $this->recipients;
+            ? $payload['mobile_list'] = array_map(fn ($recipient) => ['msisdn' => $this->formatPhoneNumber($recipient)], $this->recipients)
+            : $payload["msisdn"] = $this->formatPhoneNumber($this->recipients);
 
         return json_encode($payload);
     }
@@ -85,5 +85,14 @@ final class ConnekioDriver extends Driver implements SMSDriverInterface
         return $this->toMultiple($this->recipients)
             ? $this->batchSmsEndPoint
             : $this->singleSmsEndPoint;
+    }
+
+    protected function formatPhoneNumber($phoneNumber): string
+    {
+        if (substr($phoneNumber, 0, 1) == '0') {
+            $phoneNumber = '2' . $phoneNumber;
+        }
+        
+        return $phoneNumber;
     }
 }
