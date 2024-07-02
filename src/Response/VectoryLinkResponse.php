@@ -32,7 +32,7 @@ final class VectoryLinkResponse implements SMSDriverResponseInterface
     public function __construct(ResponseInterface $response)
     {
         $this->response = new SimpleXMLElement($response->getBody());
-        $this->status = (int) current($this->response);
+        $this->status = (int) current(get_mangled_object_vars($this->response));
     }
 
     public function success(): bool
