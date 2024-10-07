@@ -1,4 +1,5 @@
 <?php
+
 namespace RobustTools\Resala\Drivers;
 
 use RobustTools\Resala\Abstracts\Driver;
@@ -52,29 +53,27 @@ final class VectoryLinkDriver extends Driver implements SMSDriverInterface
 
     public function send(): SMSDriverResponseInterface
     {
-        $response = HTTP::get($this->endPoint, $this->headers(), $this->payload());
+        $response = HTTP::post($this->endPoint, $this->headers(), $this->payload());
 
         return new VectoryLinkResponse($response);
     }
 
-    protected function payload(): array
+    protected function payload(): string
     {
-        return
-            [
-                "SMSText" => $this->message,
-                "SMSReceiver" => $this->recipients,
-                "SMSSender" => $this->senderName,
-                'SMSLang' => $this->lang,
-                'UserName' => $this->username,
-                'Password' => $this->password
-            ];
+        return http_build_query([
+            "SMSText" => $this->message,
+            "SMSReceiver" => $this->recipients,
+            "SMSSender" => $this->senderName,
+            'SMSLang' => $this->lang,
+            'UserName' => $this->username,
+            'Password' => $this->password
+        ]);
     }
 
     protected function headers(): array
     {
         return [
-            'Content-Type' => 'text/xml; charset=utf-8',
-            'Content-Length' => 0
+            'Content-Type' => 'application/x-www-form-urlencoded'
         ];
     }
 }
