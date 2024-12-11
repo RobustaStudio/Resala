@@ -5,7 +5,6 @@ use Mockery;
 use Orchestra\Testbench\TestCase as OrchestraTestCase;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\StreamInterface;
-use RobustTools\Resala\Contracts\SMSDriverInterface;
 use RobustTools\Resala\Contracts\SMSDriverResponseInterface;
 use RobustTools\Resala\Facades\SMS as SMSFacade;
 use RobustTools\Resala\SMSServiceProvider;
