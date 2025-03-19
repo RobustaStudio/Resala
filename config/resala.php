@@ -5,6 +5,7 @@ use RobustTools\Resala\Drivers\GatewaySA;
 use RobustTools\Resala\Drivers\InfobipDriver;
 use RobustTools\Resala\Drivers\VodafoneDriver;
 use RobustTools\Resala\Drivers\VectoryLinkDriver;
+use RobustTools\Resala\Drivers\BrandEncodeDriver;
 
 return [
 
@@ -66,6 +67,14 @@ return [
             'sender_id' => env('GATEWAYSA_SENDER_ID'),
             'templateid' => env('GATEWAYSA_TEMPLATE_ID'),
         ],
+
+        'brandencode' => [
+            'end_point' => env('BRANDENCODE_END_POINT'),
+            'username' => env('BRANDENCODE_USERNAME'),
+            'password' => env('BRANDENCODE_PASSWORD'),
+            'sender_name' => env('BRANDENCODE_SENDER_NAME', 'Brandencode'),
+            'lang' => env('BRANDENCODE_LANG', 'E')
+        ],
     ],
 
     /*
@@ -81,6 +90,7 @@ return [
         'connekio' => ConnekioDriver::class,
         'infobip' => InfobipDriver::class,
         'vectory_link' => VectoryLinkDriver::class,
-        'gateway_sa' => GatewaySA::class
+        'gateway_sa' => GatewaySA::class,
+        'brandencode' => BrandEncodeDriver::class
     ],
 ];
