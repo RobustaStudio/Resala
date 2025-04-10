@@ -1,15 +1,16 @@
 <?php
+
 namespace RobustTools\Resala\Support;
 
 use InvalidArgumentException;
 
 final class Config
 {
-    const CONFIG_FILE_NAME = "resala";
+    public const CONFIG_FILE_NAME = "resala";
 
     private ConfigRepository $config;
 
-    public function __construct(?string $filepath= null)
+    public function __construct(?string $filepath = null)
     {
         $this->config = new ConfigRepository(
             $this->configurations($filepath)

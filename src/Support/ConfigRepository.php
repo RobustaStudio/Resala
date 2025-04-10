@@ -1,4 +1,5 @@
 <?php
+
 namespace RobustTools\Resala\Support;
 
 use ArrayAccess;

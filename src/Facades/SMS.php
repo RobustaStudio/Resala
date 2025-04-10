@@ -1,4 +1,5 @@
 <?php
+
 namespace RobustTools\Resala\Facades;
 
 use Illuminate\Support\Facades\Facade;

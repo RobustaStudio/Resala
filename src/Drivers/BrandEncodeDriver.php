@@ -5,28 +5,49 @@ namespace RobustTools\Resala\Drivers;
 use RobustTools\Resala\Abstracts\Driver;
 use RobustTools\Resala\Contracts\SMSDriverInterface;
 use RobustTools\Resala\Contracts\SMSDriverResponseInterface;
-use RobustTools\Resala\Response\VectoryLinkResponse;
+use RobustTools\Resala\Response\BrandEncodeResponse;
 use RobustTools\Resala\Support\HTTP;
 
-final class VectoryLinkDriver extends Driver implements SMSDriverInterface
+final class BrandEncodeDriver extends Driver implements SMSDriverInterface
 {
     /**
      * @var string|array
      */
     private $recipients;
 
+    /**
+     * @var string
+     */
     private string $message;
 
+    /**
+     * @var string
+     */
     private string $username;
 
+    /**
+     * @var string
+     */
     private string $password;
 
+    /**
+     * @var string
+     */
     private string $senderName;
 
+    /**
+     * @var string
+     */
     private string $endPoint;
 
+    /**
+     * @var string
+     */
     private string $lang;
 
+    /**
+     * @param  array $config
+     */
     public function __construct(array $config)
     {
         $this->username = $config["username"];
@@ -54,27 +75,28 @@ final class VectoryLinkDriver extends Driver implements SMSDriverInterface
 
     public function send(): SMSDriverResponseInterface
     {
-        $response = HTTP::post($this->endPoint, $this->headers(), $this->payload());
+        $response = HTTP::get($this->endPoint, $this->headers(), $this->payload());
 
-        return new VectoryLinkResponse($response);
+        return new BrandEncodeResponse($response);
     }
 
-    protected function payload(): string
+    protected function payload(): array
     {
-        return http_build_query([
-            "SMSText" => $this->message,
-            "SMSReceiver" => $this->recipients,
-            "SMSSender" => $this->senderName,
-            'SMSLang' => $this->lang,
-            'UserName' => $this->username,
-            'Password' => $this->password
-        ]);
+        return
+            [
+                "message" => $this->message,
+                "receiver" => $this->recipients,
+                "sender" => $this->senderName,
+                'language' => $this->lang,
+                'username' => $this->username,
+                'password' => $this->password
+            ];
     }
 
     protected function headers(): array
     {
         return [
-            'Content-Type' => 'application/x-www-form-urlencoded'
+            'Content-Type' => 'application/json'
         ];
     }
 }

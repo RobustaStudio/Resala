@@ -1,4 +1,5 @@
 <?php
+
 namespace RobustTools\Resala\Console;
 
 use Illuminate\Console\Command;
@@ -35,7 +36,10 @@ class PublishProviderEnvVariablesCommand extends Command
         $driver = $this->argument('driver');
 
         if (! array_key_exists($driver, config('resala.map'))) {
-            $this->error("provided driver does not exists, you may check available drivers: " . implode(", ", array_keys(config('resala.map'))));
+            $this->error(
+                "provided driver does not exists, you may check available drivers: " .
+                implode(", ", array_keys(config('resala.map')))
+            );
 
             return;
         }
@@ -77,6 +81,10 @@ class PublishProviderEnvVariablesCommand extends Command
 
         if ($this->argument('driver') == "vectory_link") {
             return File::get(__DIR__ . "/../../stubs/vectory_link.env.stub");
+        }
+
+        if ($this->argument('driver') == "brandencode") {
+            return File::get(__DIR__ . "/../../stubs/brandencode.env.stub");
         }
     }
 }

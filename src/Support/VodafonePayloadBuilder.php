@@ -1,4 +1,5 @@
 <?php
+
 namespace RobustTools\Resala\Support;
 
 use DOMAttr;
@@ -59,16 +60,21 @@ final class VodafonePayloadBuilder
         return $this->domDocument->saveXML();
     }
 
-    private function rootElement() : DOMElement
+    private function rootElement(): DOMElement
     {
         return $this->domDocument->createElement('SubmitSMSRequest');
     }
 
-    private function setRootElementAttributes(DOMElement $rootElement) : void
+    private function setRootElementAttributes(DOMElement $rootElement): void
     {
         $attr_xmlns = new DOMAttr('xmlns:', "http://www.edafa.com/web2sms/sms/model/");
         $attr_xmlns_xsi = new DOMAttr("xmlns:xsi", "http://www.w3.org/2001/XMLSchema-instance");
-        $attr_xsi_schemaLocation = new DOMAttr("xsi:schemaLocation", "http://www.edafa.com/web2sms/sms/model/ SMSAPI.xsd");
+
+        $attr_xsi_schemaLocation = new DOMAttr(
+            "xsi:schemaLocation",
+            "http://www.edafa.com/web2sms/sms/model/ SMSAPI.xsd"
+        );
+
         $attr_xsi_type = new DOMAttr("xsi:type", "SubmitSMSRequest");
 
         $rootElement->setAttributeNode($attr_xmlns);
@@ -77,22 +83,22 @@ final class VodafonePayloadBuilder
         $rootElement->setAttributeNode($attr_xsi_type);
     }
 
-    private function generateAccountIdElement(DOMElement $rootElement) : void
+    private function generateAccountIdElement(DOMElement $rootElement): void
     {
         $rootElement->appendChild($this->domDocument->createElement('AccountId', $this->accountId));
     }
 
-    private function generatePasswordElement(DOMElement $rootElement) : void
+    private function generatePasswordElement(DOMElement $rootElement): void
     {
         $rootElement->appendChild($this->domDocument->createElement('Password', $this->password));
     }
 
-    private function generateSecureHashElement(DOMElement $rootElement) : void
+    private function generateSecureHashElement(DOMElement $rootElement): void
     {
         $rootElement->appendChild($this->domDocument->createElement('SecureHash', $this->secureHash));
     }
 
-    private function generateSMSListElement(DOMElement $rootElement, string $recipient) : void
+    private function generateSMSListElement(DOMElement $rootElement, string $recipient): void
     {
         $sms_list_node = $rootElement->appendChild($this->domDocument->createElement("SMSList"));
         $sms_list_node->appendChild($this->domDocument->createElement("SenderName", $this->senderName));

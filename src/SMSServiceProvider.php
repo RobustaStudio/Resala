@@ -1,4 +1,5 @@
 <?php
+
 namespace RobustTools\Resala;
 
 use Illuminate\Support\ServiceProvider;
@@ -30,7 +31,7 @@ class SMSServiceProvider extends ServiceProvider
 
         // Register the main class to use with the facade
         $this->app->singleton('sms', function () {
-            return new SMS;
+            return new SMS();
         });
     }
 }

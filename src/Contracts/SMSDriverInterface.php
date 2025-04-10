@@ -1,4 +1,5 @@
 <?php
+
 namespace RobustTools\Resala\Contracts;
 
 interface SMSDriverInterface

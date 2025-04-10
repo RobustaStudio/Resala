@@ -1,8 +1,8 @@
 <?php
+
 namespace RobustTools\Resala\Factories;
 
 use RobustTools\Resala\Contracts\SMSDriverInterface;
-
 use RobustTools\Resala\Support\Config;
 
 final class SMSDriverFactory
