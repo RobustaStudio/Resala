@@ -1,10 +1,14 @@
 <?php
+
 namespace RobustTools\Resala\Drivers;
 
 use RobustTools\Resala\Abstracts\Driver;
-use RobustTools\Resala\Contracts\{SMSDriverInterface, SMSDriverResponseInterface};
+use RobustTools\Resala\Contracts\SMSDriverInterface;
+use RobustTools\Resala\Contracts\SMSDriverResponseInterface;
 use RobustTools\Resala\Response\VodafoneResponse;
-use RobustTools\Resala\Support\{HTTP, VodafonePayloadBuilder};
+use RobustTools\Resala\Support\HTTP;
+use RobustTools\Resala\Support\VodafonePayloadBuilder;
+
 final class VodafoneDriver extends Driver implements SMSDriverInterface
 {
     /** @var string|array */
@@ -80,12 +84,24 @@ final class VodafoneDriver extends Driver implements SMSDriverInterface
 
         if ($this->toMultiple($this->recipients)) {
             foreach ($this->recipients as $recipient) {
-                $hashableKey .= sprintf("&SenderName=%s&ReceiverMSISDN=%s&SMSText=%s", $this->senderName, $recipient, $this->message);
+                $hashableKey .= sprintf(
+                    "&SenderName=%s&ReceiverMSISDN=%s&SMSText=%s",
+                    $this->senderName,
+                    $recipient,
+                    $this->message
+                );
             }
 
             return $hashableKey;
         } else {
-            return sprintf("AccountId=%s&Password=%s&SenderName=%s&ReceiverMSISDN=%s&SMSText=%s", $this->accountId, $this->password, $this->senderName, $this->recipients, $this->message);
+            return sprintf(
+                "AccountId=%s&Password=%s&SenderName=%s&ReceiverMSISDN=%s&SMSText=%s",
+                $this->accountId,
+                $this->password,
+                $this->senderName,
+                $this->recipients,
+                $this->message
+            );
         }
     }
 }

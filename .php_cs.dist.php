@@ -46,7 +46,6 @@ $finder = Symfony\Component\Finder\Finder::create()
     ->exclude("vendor")
     ->in([
         __DIR__ . '/src',
-        __DIR__ . '/tests',
     ])
     ->name('*.php')
     ->notName('*.blade.php')

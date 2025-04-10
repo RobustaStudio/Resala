@@ -1,8 +1,10 @@
 <?php
+
 namespace RobustTools\Resala\Drivers;
 
 use RobustTools\Resala\Abstracts\Driver;
-use RobustTools\Resala\Contracts\{SMSDriverInterface, SMSDriverResponseInterface};
+use RobustTools\Resala\Contracts\SMSDriverInterface;
+use RobustTools\Resala\Contracts\SMSDriverResponseInterface;
 use RobustTools\Resala\Response\ConnekioResponse;
 use RobustTools\Resala\Support\HTTP;
 
@@ -64,9 +66,10 @@ final class ConnekioDriver extends Driver implements SMSDriverInterface
             "sender" => $this->senderName
         ];
 
-        $this->toMultiple($this->recipients)
-            ? $payload['mobile_list'] = array_map(fn ($recipient) => ['msisdn' => $this->formatPhoneNumber($recipient)], $this->recipients)
-            : $payload["msisdn"] = $this->formatPhoneNumber($this->recipients);
+        $this->toMultiple($this->recipients) ? $payload['mobile_list'] = array_map(
+            fn($recipient) => ['msisdn' => $this->formatPhoneNumber($recipient)],
+            $this->recipients
+        ) : $payload["msisdn"] = $this->formatPhoneNumber($this->recipients);
 
         return json_encode($payload);
     }
@@ -76,7 +79,10 @@ final class ConnekioDriver extends Driver implements SMSDriverInterface
         return [
             'Content-Type' => 'application/json',
             'Accept' => 'application/json',
-            'Authorization' => sprintf("Basic %s", base64_encode($this->username . ':' . $this->password . ':' . $this->accountId))
+            'Authorization' => sprintf(
+                "Basic %s",
+                base64_encode($this->username . ':' . $this->password . ':' . $this->accountId)
+            )
         ];
     }
 
@@ -92,7 +98,7 @@ final class ConnekioDriver extends Driver implements SMSDriverInterface
         if (substr($phoneNumber, 0, 1) == '0') {
             $phoneNumber = '2' . $phoneNumber;
         }
-        
+
         return $phoneNumber;
     }
 }
