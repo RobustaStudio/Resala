@@ -3,14 +3,16 @@
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/robust-tools/resala.svg?style=flat-square)](https://packagist.org/packages/robust-tools/resala)
 [![Total Downloads](https://img.shields.io/packagist/dt/robust-tools/resala.svg?style=flat-square)](https://packagist.org/packages/robust-tools/resala)
 
-**Resala** is a PHP & Laravel Package, (Designed to add support to your laravel or just native php app for sending SMS using local operators in the MENA region Like `Vodafone`, `Infopib`, `Conneckio`, `VectoryLink`).  
+**Resala** is a PHP & Laravel Package, (Designed to add support to your laravel or just native php app for sending SMS using local operators in the MENA region Like `Vodafone`, `Infobip`, `Connekio`, `VectoryLink`, `Gateway SA`, `BrandEncode`).  
 **Resala** not just tied to use inside Laravel you can hook it up in any php code
 
 ## Supported Providers
 - Vodafone SMS Gateway
 - Connekio SMS Gateway
-- InfoPib SMS Gateway
+- Infobip SMS Gateway
 - Vectory Link SMS Gateway
+- Gateway SA SMS Gateway
+- BrandEncode SMS Gateway
 
 ## Installation
 
@@ -82,6 +84,24 @@ return [
             'sender_name' => env('VECTORY_LINK_SENDER_NAME', 'Vectory Link'),
             'lang' => env('VECTORY_LINK_LANG', 'E')
         ],
+
+        'gateway_sa' => [
+            'end_point' => env('GATEWAYSA_END_POINT', 'http://REST.GATEWAY.SA/api/SendSMS'),
+            'api_id' => env('GATEWAYSA_API_ID'),
+            'api_password' => env('GATEWAYSA_API_PASSWORD'),
+            'sms_type' => env('GATEWAYSA_SMS_TYPE', 'T'),
+            'encoding' => env('GATEWAYSA_ENCODING', 'T'),
+            'sender_id' => env('GATEWAYSA_SENDER_ID'),
+            'templateid' => env('GATEWAYSA_TEMPLATE_ID'),
+        ],
+
+        'brandencode' => [
+            'end_point' => env('BRANDENCODE_END_POINT'),
+            'username' => env('BRANDENCODE_USERNAME'),
+            'password' => env('BRANDENCODE_PASSWORD'),
+            'sender_name' => env('BRANDENCODE_SENDER_NAME', 'Brandencode'),
+            'lang' => env('BRANDENCODE_LANG', 'E')
+        ],
     ],
 
     /*
@@ -96,7 +116,9 @@ return [
         'vodafone' => VodafoneDriver::class,
         'connekio' => ConnekioDriver::class,
         'infobip' => InfobipDriver::class,
-        'vectory_link' => VectoryLink::class
+        'vectory_link' => VectoryLinkDriver::class,
+        'gateway_sa' => GatewaySA::class,
+        'brandencode' => BrandEncodeDriver::class
     ],
 ];
 ```
@@ -120,6 +142,16 @@ php artisan resala:make infobip
 This adds `vectory_link` environment variables to your .env file.
 ```bash
 php artisan resala:make vectory_link
+```
+
+This adds `brandencode` environment variables to your .env file.
+```bash
+php artisan resala:make brandencode
+```
+
+This adds `gateway_sa` environment variables to your .env file.
+```bash
+php artisan resala:make gateway_sa
 ```
 
 ## Usage

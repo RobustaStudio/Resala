@@ -1,10 +1,8 @@
 <?php
-
 namespace RobustTools\Resala\Drivers;
 
 use RobustTools\Resala\Abstracts\Driver;
-use RobustTools\Resala\Contracts\SMSDriverInterface;
-use RobustTools\Resala\Contracts\SMSDriverResponseInterface;
+use RobustTools\Resala\Contracts\{SMSDriverInterface, SMSDriverResponseInterface};
 use RobustTools\Resala\Response\ConnekioResponse;
 use RobustTools\Resala\Support\HTTP;
 
@@ -67,7 +65,7 @@ final class ConnekioDriver extends Driver implements SMSDriverInterface
         ];
 
         $this->toMultiple($this->recipients) ? $payload['mobile_list'] = array_map(
-            fn($recipient) => ['msisdn' => $this->formatPhoneNumber($recipient)],
+            fn ($recipient) => ['msisdn' => $this->formatPhoneNumber($recipient)],
             $this->recipients
         ) : $payload["msisdn"] = $this->formatPhoneNumber($this->recipients);
 
@@ -86,13 +84,6 @@ final class ConnekioDriver extends Driver implements SMSDriverInterface
         ];
     }
 
-    private function endpoint(): string
-    {
-        return $this->toMultiple($this->recipients)
-            ? $this->batchSmsEndPoint
-            : $this->singleSmsEndPoint;
-    }
-
     protected function formatPhoneNumber($phoneNumber): string
     {
         if (substr($phoneNumber, 0, 1) == '0') {
@@ -100,5 +91,12 @@ final class ConnekioDriver extends Driver implements SMSDriverInterface
         }
 
         return $phoneNumber;
+    }
+
+    private function endpoint(): string
+    {
+        return $this->toMultiple($this->recipients)
+            ? $this->batchSmsEndPoint
+            : $this->singleSmsEndPoint;
     }
 }

@@ -1,4 +1,5 @@
 <?php
+
 namespace RobustTools\Resala\Tests;
 
 use Mockery;
@@ -8,6 +9,7 @@ use Psr\Http\Message\StreamInterface;
 use RobustTools\Resala\Contracts\SMSDriverResponseInterface;
 use RobustTools\Resala\Facades\SMS as SMSFacade;
 use RobustTools\Resala\SMSServiceProvider;
+
 class SMSTest extends OrchestraTestCase
 {
     private $mockXmlResponse;
@@ -34,7 +36,6 @@ class SMSTest extends OrchestraTestCase
                     ->sendSMS();
 
         $this->assertInstanceOf(SMSDriverResponseInterface::class, $sms);
-
     }
 
     private function createMockXMLResponse(): self

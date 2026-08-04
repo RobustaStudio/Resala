@@ -1,5 +1,4 @@
 <?php
-
 namespace RobustTools\Resala;
 
 use Illuminate\Support\ServiceProvider;

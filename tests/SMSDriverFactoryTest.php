@@ -1,4 +1,5 @@
 <?php
+
 namespace RobustTools\Resala\Tests;
 
 use Orchestra\Testbench\TestCase as OrchestraTestCase;
@@ -25,7 +26,8 @@ class SMSDriverFactoryTest extends OrchestraTestCase
         \Mockery::mock('alias:' . SMSDriverFactory::class)
                 ->shouldReceive('create')
                 ->once()
-                ->andReturn(\Mockery::mock(SMSDriverInterface::class));;
+                ->andReturn(\Mockery::mock(SMSDriverInterface::class));
+        ;
 
         SMSDriverFactory::create();
     }

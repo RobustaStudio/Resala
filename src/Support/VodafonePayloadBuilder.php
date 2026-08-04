@@ -1,5 +1,4 @@
 <?php
-
 namespace RobustTools\Resala\Support;
 
 use DOMAttr;

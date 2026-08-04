@@ -1,5 +1,4 @@
 <?php
-
 namespace RobustTools\Resala\Abstracts;
 
 use RobustTools\Resala\Contracts\SMSDriverInterface;

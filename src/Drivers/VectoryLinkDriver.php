@@ -1,5 +1,4 @@
 <?php
-
 namespace RobustTools\Resala\Drivers;
 
 use RobustTools\Resala\Abstracts\Driver;
@@ -72,6 +71,13 @@ final class VectoryLinkDriver extends Driver implements SMSDriverInterface
         ];
     }
 
+    protected function headers(): array
+    {
+        return [
+            'Content-Type' => 'application/json',
+        ];
+    }
+
     private function generateGuid(): string
     {
         $data = random_bytes(16);
@@ -79,12 +85,5 @@ final class VectoryLinkDriver extends Driver implements SMSDriverInterface
         $data[8] = chr(ord($data[8]) & 0x3f | 0x80);
 
         return vsprintf('%s%s-%s-%s-%s-%s%s%s', str_split(bin2hex($data), 4));
-    }
-
-    protected function headers(): array
-    {
-        return [
-            'Content-Type' => 'application/json',
-        ];
     }
 }

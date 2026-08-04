@@ -1,5 +1,4 @@
 <?php
-
 namespace RobustTools\Resala\Contracts;
 
 use Psr\Http\Message\ResponseInterface;

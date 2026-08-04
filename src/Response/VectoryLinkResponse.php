@@ -1,5 +1,4 @@
 <?php
-
 namespace RobustTools\Resala\Response;
 
 use Psr\Http\Message\ResponseInterface;
@@ -36,14 +35,6 @@ final class VectoryLinkResponse implements SMSDriverResponseInterface
         $this->status = $this->parseStatus($contents);
     }
 
-    private function parseStatus(string $contents): int
-    {
-        if ($contents === '' || !is_numeric($contents)) {
-            return self::STATUS_OTHER_ERROR;
-        }
-        return (int) $contents;
-    }
-
     public function success(): bool
     {
         return $this->status === self::STATUS_SUCCESS;
@@ -75,5 +66,14 @@ final class VectoryLinkResponse implements SMSDriverResponseInterface
         ];
 
         return $messages[$this->status] ?? 'Something wrong happened';
+    }
+
+    private function parseStatus(string $contents): int
+    {
+        if ($contents === '' || !is_numeric($contents)) {
+            return self::STATUS_OTHER_ERROR;
+        }
+
+        return (int) $contents;
     }
 }
