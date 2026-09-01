@@ -3,7 +3,7 @@
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/robust-tools/resala.svg?style=flat-square)](https://packagist.org/packages/robust-tools/resala)
 [![Total Downloads](https://img.shields.io/packagist/dt/robust-tools/resala.svg?style=flat-square)](https://packagist.org/packages/robust-tools/resala)
 
-**Resala** is a PHP & Laravel Package, (Designed to add support to your laravel or just native php app for sending SMS using local operators in the MENA region Like `Vodafone`, `Infobip`, `Connekio`, `VectoryLink`, `Gateway SA`, `BrandEncode`).  
+**Resala** is a PHP & Laravel Package, (Designed to add support to your laravel or just native php app for sending SMS using local operators in the MENA region Like `Vodafone`, `Infobip`, `Connekio`, `VectoryLink`, `Community Ads`, `Gateway SA`, `BrandEncode`).  
 **Resala** not just tied to use inside Laravel you can hook it up in any php code
 
 ## Supported Providers
@@ -11,6 +11,7 @@
 - Connekio SMS Gateway
 - Infobip SMS Gateway
 - Vectory Link SMS Gateway
+- Community Ads SMS Gateway
 - Gateway SA SMS Gateway
 - BrandEncode SMS Gateway
 
@@ -85,6 +86,14 @@ return [
             'lang' => env('VECTORY_LINK_LANG', 'E')
         ],
 
+        'community_ads' => [
+            'end_point' => env('COMMUNITY_ADS_END_POINT', 'https://app.community-ads.com/SendSMSAPI/api/SMSSender/SendSMS'),
+            'username' => env('COMMUNITY_ADS_USERNAME'),
+            'password' => env('COMMUNITY_ADS_PASSWORD'),
+            'sender_name' => env('COMMUNITY_ADS_SENDER_NAME', 'Community Ads'),
+            'lang' => env('COMMUNITY_ADS_LANG', 'E')
+        ],
+
         'gateway_sa' => [
             'end_point' => env('GATEWAYSA_END_POINT', 'http://REST.GATEWAY.SA/api/SendSMS'),
             'api_id' => env('GATEWAYSA_API_ID'),
@@ -117,6 +126,7 @@ return [
         'connekio' => ConnekioDriver::class,
         'infobip' => InfobipDriver::class,
         'vectory_link' => VectoryLinkDriver::class,
+        'community_ads' => CommunityAdsDriver::class,
         'gateway_sa' => GatewaySA::class,
         'brandencode' => BrandEncodeDriver::class
     ],
@@ -142,6 +152,11 @@ php artisan resala:make infobip
 This adds `vectory_link` environment variables to your .env file.
 ```bash
 php artisan resala:make vectory_link
+```
+
+This adds `community_ads` environment variables to your .env file.
+```bash
+php artisan resala:make community_ads
 ```
 
 This adds `brandencode` environment variables to your .env file.
