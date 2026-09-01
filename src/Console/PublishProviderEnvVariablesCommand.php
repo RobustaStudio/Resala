@@ -82,6 +82,10 @@ class PublishProviderEnvVariablesCommand extends Command
             return File::get(__DIR__ . "/../../stubs/vectory_link.env.stub");
         }
 
+        if ($this->argument('driver') == "community_ads") {
+            return File::get(__DIR__ . "/../../stubs/community_ads.env.stub");
+        }
+
         if ($this->argument('driver') == "brandencode") {
             return File::get(__DIR__ . "/../../stubs/brandencode.env.stub");
         }

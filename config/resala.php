@@ -5,6 +5,7 @@ use RobustTools\Resala\Drivers\GatewaySA;
 use RobustTools\Resala\Drivers\InfobipDriver;
 use RobustTools\Resala\Drivers\VodafoneDriver;
 use RobustTools\Resala\Drivers\VectoryLinkDriver;
+use RobustTools\Resala\Drivers\CommunityAdsDriver;
 use RobustTools\Resala\Drivers\BrandEncodeDriver;
 
 return [
@@ -58,6 +59,14 @@ return [
             'lang' => env('VECTORY_LINK_LANG', 'E')
         ],
 
+        'community_ads' => [
+            'end_point' => env('COMMUNITY_ADS_END_POINT', 'https://app.community-ads.com/SendSMSAPI/api/SMSSender/SendSMS'),
+            'username' => env('COMMUNITY_ADS_USERNAME'),
+            'password' => env('COMMUNITY_ADS_PASSWORD'),
+            'sender_name' => env('COMMUNITY_ADS_SENDER_NAME', 'Community Ads'),
+            'lang' => env('COMMUNITY_ADS_LANG', 'E')
+        ],
+
         'gateway_sa' => [
             'end_point' => env('GATEWAYSA_END_POINT', 'http://REST.GATEWAY.SA/api/SendSMS'),
             'api_id' => env('GATEWAYSA_API_ID'),
@@ -90,6 +99,7 @@ return [
         'connekio' => ConnekioDriver::class,
         'infobip' => InfobipDriver::class,
         'vectory_link' => VectoryLinkDriver::class,
+        'community_ads' => CommunityAdsDriver::class,
         'gateway_sa' => GatewaySA::class,
         'brandencode' => BrandEncodeDriver::class
     ],
