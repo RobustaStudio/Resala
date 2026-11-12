@@ -1,5 +1,6 @@
 {
     "name": "robust-tools/resala",
+    "version": "3.0.0",
     "description": "Laravel SMS Gateway Integration Package",
     "keywords": [
         "robust-tools",
