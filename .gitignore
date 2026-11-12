@@ -105,3 +105,5 @@ modules.xml
 src/.DS_Store
 .editorconfig
 .phpunit.result.cache
+# Libraries should not commit a lock file
+composer.lock

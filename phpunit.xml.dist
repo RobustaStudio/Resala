@@ -4,6 +4,16 @@
     bootstrap="vendor/autoload.php"
     colors="true"
 >
+    <testsuites>
+        <testsuite name="Resala Test Suite">
+            <directory>tests</directory>
+        </testsuite>
+    </testsuites>
+    <source>
+        <include>
+            <directory>src</directory>
+        </include>
+    </source>
     <php>
         <env name="APP_NAME" value="Resala" />
         <env name="APP_ENV" value="testing" />
